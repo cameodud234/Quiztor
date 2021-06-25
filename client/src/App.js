@@ -12,7 +12,7 @@ class App extends Component {
     };
   }
   callAPI(){
-    fetch("http://192.168.1.200:9000/reactAPI")
+    fetch("http://localhost:9000/reactAPI")
     .then(res => res.text())
     .then(res => this.setState({ apiResponse: res }));
   }
