@@ -4,6 +4,21 @@ import './App.css';
 //import Loginbar from './components/Loginbar';
 import React, {useState, useEffect } from 'react';
 import Loginbar from './components/MenuComps/Loginbar';
+import { Typography } from '@material-ui/core';
+import Link from '@material-ui/core/Link';
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://cameodud234.github.io/">
+        Quiztor
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
 
 function App (props) {
 
@@ -11,7 +26,7 @@ function App (props) {
 
   useEffect(() => {
     function callAPI() {
-      fetch("http://localhost:9000/reactAPI")
+      fetch("http://192.168.1.201:9000/reactAPI")
         .then(res => res.text())
           .then(res => set_apiResponse(res));
     }
@@ -23,7 +38,7 @@ function App (props) {
   return (
     <div className="App">
       <header className="App-header">
-        < Loginbar notify_count={14} mail_count={150} />
+        < Loginbar notify_count={2} mail_count={15} />
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -39,6 +54,7 @@ function App (props) {
       </header>
       <footer>
         {apiResponse}
+        < Copyright />
       </footer>
     </div>
   )
