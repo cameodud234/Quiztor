@@ -1,10 +1,12 @@
 import React from 'react';
+import { mainListItems, secondaryListItems } from "./MenuListItems/SideBarMenuList";
+
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import clsx from 'clsx';
 import Drawer from '@material-ui/core/Drawer';
-import { Divider } from '@material-ui/core/Divider';
+import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
@@ -18,13 +20,17 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { List } from '@material-ui/core';
 
 
 const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+      display: 'flex',
+    },
     grow: {
-      flexGrow: 1,
+      flexGrow: 12,
     },
     toolbar: {
       paddingRight: 24,
@@ -59,10 +65,11 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
     title: {
-      display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
+      // display: 'none',
+      // [theme.breakpoints.up('sm')]: {
+      //   display: 'block',
+      // },
+      flexGrow: 1,
     },
     paper: {
       padding: theme.spacing(2),
@@ -90,8 +97,13 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(9),
       }
     },
+    content: {
+      flexGrow: 1,
+      height: '100vh',
+      overflow: 'auto',
+    },
     fixedHeight: {
-      height: 240,
+      height:240,
     },
     container: {
       paddingTop: theme.spacing(4),
@@ -149,48 +161,60 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
+
+
+
+
   function Loginbar(props) {
     const classes = useStyles();
     const [auth, setAuth] = React.useState(false);
-    const [openMenu, setOpenMenu] = React.useState(true);
+    const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
     const [openMobileMenu, setOpenMobileMenu] = React.useState(true);
     const [openDrawer, setOpenDrawer] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [anchorSign_in, setAnchorSign_in] = React.useState(false);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   
-    const isMenuOpen = Boolean(anchorEl);
+    const isProfileMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const isSignedIn = Boolean(anchorSign_in);
 
     const handleDrawerOpen = () => {
       setOpenDrawer(true);
-      console.log(openDrawer);
+      console.log("drawer open");
     }
 
     const handleDrawerClose = () => {
       setOpenDrawer(false);
-      console.log(openDrawer);
+      console.log("drawer close");
     }
   
-    const handleMenuOpen = (event) => {
+    const handleProfileMenuOpen = (event) => {
       setAnchorEl(event.currentTarget);
-      console.log("open");
+      setProfileOpenMenu(true);
+      console.log("profile menu open");
+    };
+
+    const handleProfileMenuClose = () => {
+      setAnchorEl(null);
+      setProfileOpenMenu(false);
+      console.log("profile menu close");
+      handleMobileMenuClose();
     };
 
     const handleMobileMenuOpen = (event) => {
       setMobileMoreAnchorEl(event.currentTarget);
-    };
-
-    const handleMenuClose = () => {
-      setAnchorEl(null);
-      handleMobileMenuClose();
-
+      setOpenMobileMenu(true);
+      console.log("mobile menu open");
     };
   
     const handleMobileMenuClose = () => {
       setMobileMoreAnchorEl(null);
-      console.log("close")
+      setOpenMobileMenu(false);
+      console.log("mobile menu close");
+      // if(!openMobileMenu){
+      //   alert("mobile menu closing");
+      // }
     };
 
     const handleSign_in = (event) => {
@@ -198,6 +222,7 @@ const useStyles = makeStyles((theme) => ({
     }
   
     const menuId = 'primary-search-account-menu';
+
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -205,11 +230,11 @@ const useStyles = makeStyles((theme) => ({
         id={menuId}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        openMenu={isMenuOpen}
-        onClose={handleMenuClose}
+        open={isProfileMenuOpen}
+        onClose={handleProfileMenuClose}
       >
-        <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+        <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
       </Menu>
     );
   
@@ -221,7 +246,7 @@ const useStyles = makeStyles((theme) => ({
         id={mobileMenuId}
         keepMounted
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        openMobileMenu={isMobileMenuOpen}
+        open={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
       >
         <MenuItem>
@@ -240,7 +265,7 @@ const useStyles = makeStyles((theme) => ({
           </IconButton>
           <p>Notifications</p>
         </MenuItem> 
-        <MenuItem onClick={handleMenuOpen}>
+        <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
             aria-label="account of current user"
             aria-controls="primary-search-account-menu"
@@ -257,8 +282,8 @@ const useStyles = makeStyles((theme) => ({
     const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   
     return (
-      <div className={classes.grow}>
-        <AppBar position="static" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
+      <div className={classes.root}>
+        <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
           <Toolbar className={classes.toolbar}>
             <IconButton
               edge="start"
@@ -269,10 +294,15 @@ const useStyles = makeStyles((theme) => ({
             >
               <MenuIcon />
             </IconButton>
+            <div className={classes.toolbarIcon}>
+            
+            </div>
             <Typography className={classes.title} variant="h6" noWrap>
               Quiztor
             </Typography>
-            {/* <div className={classes.search}>
+
+
+            <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -284,10 +314,13 @@ const useStyles = makeStyles((theme) => ({
                 }}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </div> */}
+            </div>
+
+
+
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
-              <IconButton aria-label="mailCount" color="inherit">
+              {/* <IconButton aria-label="mailCount" color="inherit">
                 <Badge badgeContent={props.mail_count} color="secondary">
                   <MailIcon />
                 </Badge>
@@ -296,13 +329,13 @@ const useStyles = makeStyles((theme) => ({
                 <Badge badgeContent={props.notify_count} color="secondary">
                   <NotificationsIcon />
                 </Badge>
-              </IconButton>
+              </IconButton> */}
               <IconButton
                 edge="end"
                 aria-label="account of current user"
                 aria-controls={menuId}
                 aria-haspopup="true"
-                onClick={handleMenuOpen}
+                onClick={handleProfileMenuOpen}
                 color="inherit"
               >
                 <AccountCircle />
@@ -322,24 +355,35 @@ const useStyles = makeStyles((theme) => ({
           </Toolbar>
         </AppBar>
 
-        {renderMobileMenu}
-        {renderMenu}
 
+        {renderMobileMenu}
+        {renderMenu}      
+        
         <Drawer
           variant="permanent"
           classes={{
             paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
           }}
-          openDrawer={openDrawer}
+          open={openDrawer}
         >
-
           <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
+          <IconButton className={classes.toolbarIcon} onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
           </div>
 
+          <Divider />
+
+          <List>{mainListItems}</List>
+          <List>{secondaryListItems}</List>
+  
+
         </Drawer>
+
+        <main>
+
+        </main>
+        
 
       </div>
     );
