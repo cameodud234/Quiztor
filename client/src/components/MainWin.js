@@ -1,5 +1,8 @@
 import React from 'react';
-import { mainListItems, secondaryListItems } from "./MenuListItems/SideBarMenuList";
+import { mainListItems, secondaryListItems } from "./MenuComps/MenuListItems/SideBarMenuList";
+
+import CenterWin from './centerComps/CenterWin';
+import Copyright from './Copyright';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -20,7 +23,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { List } from '@material-ui/core';
+import { Box, List } from '@material-ui/core';
 
 
 const drawerWidth = 200;
@@ -65,10 +68,10 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
     title: {
-      // display: 'none',
-      // [theme.breakpoints.up('sm')]: {
-      //   display: 'block',
-      // },
+      display: 'none',
+      [theme.breakpoints.up('sm')]: {
+        display: 'block',
+      },
       flexGrow: 1,
     },
     paper: {
@@ -106,6 +109,7 @@ const useStyles = makeStyles((theme) => ({
       height:240,
     },
     container: {
+      backgroundColor: '#cfe8fc',
       paddingTop: theme.spacing(4),
       paddingBottom: theme.spacing(4),
     },
@@ -165,7 +169,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-  function Loginbar(props) {
+  function MainWin(props) {
     const classes = useStyles();
     const [auth, setAuth] = React.useState(false);
     const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
@@ -302,7 +306,7 @@ const useStyles = makeStyles((theme) => ({
             </Typography>
 
 
-            <div className={classes.search}>
+            {/* <div className={classes.search}>
               <div className={classes.searchIcon}>
                 <SearchIcon />
               </div>
@@ -314,7 +318,7 @@ const useStyles = makeStyles((theme) => ({
                 }}
                 inputProps={{ 'aria-label': 'search' }}
               />
-            </div>
+            </div> */}
 
 
 
@@ -380,8 +384,14 @@ const useStyles = makeStyles((theme) => ({
 
         </Drawer>
 
-        <main>
-
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+            <container maxWidth="lg" className={classes.container}>
+              <CenterWin />
+            </container>
+            <Box>
+              <Copyright />
+            </Box>
         </main>
         
 
@@ -389,4 +399,4 @@ const useStyles = makeStyles((theme) => ({
     );
   }
 
-  export default Loginbar;
+  export default MainWin;

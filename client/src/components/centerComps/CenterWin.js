@@ -1,15 +1,12 @@
 import React, {useState, useEffect } from 'react';
-import Loginbar from './components/menuComps/Loginbar';
-import Copyright from './components/Copyright';
-import logo from './logo.svg';
-import './App.css';
+import logo from '../../logo.svg';
+// import '../../App.css';
 
 
-function MainWin() {
+function CenterWin() {
     return (
-        <div className="App">
+        <React.Fragment>
             <header className="App-header">
-                < Loginbar notify_count="2" mail_count="3" />
                 <img src={logo} className="App-logo" alt="logo" />
                 <a
                 className="App-link"
@@ -20,12 +17,8 @@ function MainWin() {
                 My website 
                 </a>
             </header>
-            {/* <footer>
-                {apiResponse}
-                < Copyright />
-            </footer> */}
-        </div>
+        </React.Fragment>
     );
 }
 
-export default MainWin;
+export default CenterWin;
