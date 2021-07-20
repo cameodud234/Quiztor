@@ -3,6 +3,8 @@ import { mainListItems, secondaryListItems } from "./MenuComps/MenuListItems/Sid
 
 import CenterWin from './centerComps/CenterWin';
 import Copyright from './Copyright';
+import SearchBar from './MenuComps/SearchBar';
+import { profileMenuList, profileMenuListLogIn } from './MenuComps/MenuListItems/ProfileMenuList';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -61,14 +63,14 @@ const useStyles = makeStyles((theme) => ({
       }),
     },
     menuButton: {
-      // marginRight: theme.spacing(2),
-      marginRight: 36,
+      marginRight: theme.spacing(2),
+      //marginRight: 36,
     },
     menuButtonHidden: {
       display: 'none',
     },
     title: {
-      display: 'none',
+      // display: 'none',
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
@@ -104,6 +106,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       height: '100vh',
       overflow: 'auto',
+      backgroundColor: '#282c34',
     },
     fixedHeight: {
       height:240,
@@ -114,29 +117,8 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(4),
     },
     appBarSpacer: theme.mixins.toolbar,
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    searchHidden: {
+      display: 'none',
     },
     inputRoot: {
       color: 'inherit',
@@ -227,6 +209,14 @@ const useStyles = makeStyles((theme) => ({
   
     const menuId = 'primary-search-account-menu';
 
+    const profileMenu = profileMenuListLogIn.map(item => {
+      return <MenuItem key={item.toString()} onClick={handleProfileMenuClose}>{item}</MenuItem>
+    });
+
+    const loginMenu = profileMenuList.map(item => {
+      return <MenuItem onClick={handleProfileMenuClose}>{item}</MenuItem>
+    });
+
     const renderMenu = (
       <Menu
         anchorEl={anchorEl}
@@ -237,8 +227,11 @@ const useStyles = makeStyles((theme) => ({
         open={isProfileMenuOpen}
         onClose={handleProfileMenuClose}
       >
-        <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
+        {!auth && loginMenu}
+        {auth && profileMenu}
+        {/* <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+        <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem> */}
+        {/* <MenuItem onClick={handleProfileMenuClose}>Signin</MenuItem> */}
       </Menu>
     );
   
@@ -253,22 +246,28 @@ const useStyles = makeStyles((theme) => ({
         open={isMobileMenuOpen}
         onClose={handleMobileMenuClose}
       >
-        <MenuItem>
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={props.mail_count} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton aria-label="show 11 new notifications" color="inherit">
-            <Badge badgeContent={props.notify_count} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem> 
+
+        {auth && (
+          <div>
+            <MenuItem>
+              <IconButton aria-label="show 4 new mails" color="inherit">
+                <Badge badgeContent={props.mail_count} color="secondary">
+                  <MailIcon />
+                </Badge>
+              </IconButton>
+              <p>Messages</p>
+            </MenuItem>
+            <MenuItem>
+              <IconButton aria-label="show 11 new notifications" color="inherit">
+                <Badge badgeContent={props.notify_count} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+              <p>Notifications</p>
+            </MenuItem>
+          </div>
+        )}
+
         <MenuItem onClick={handleProfileMenuOpen}>
           <IconButton
             aria-label="account of current user"
@@ -305,35 +304,30 @@ const useStyles = makeStyles((theme) => ({
               Quiztor
             </Typography>
 
+            <div className={!auth && classes.searchHidden}>
+              <SearchBar />
+            </div>
 
-            {/* <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div> */}
-
-
+            
 
             <div className={classes.grow} />
+
             <div className={classes.sectionDesktop}>
-              {/* <IconButton aria-label="mailCount" color="inherit">
-                <Badge badgeContent={props.mail_count} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton aria-label="notifyCount" color="inherit">
-                <Badge badgeContent={props.notify_count} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton> */}
+              {auth && (
+                <div>
+                  <IconButton aria-label="mailCount" color="inherit">
+                    <Badge badgeContent={props.mail_count} color="secondary">
+                      <MailIcon />
+                    </Badge>
+                  </IconButton>
+                  <IconButton aria-label="notifyCount" color="inherit">
+                    <Badge badgeContent={props.notify_count} color="secondary">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </div>
+              )}
+
               <IconButton
                 edge="end"
                 aria-label="account of current user"
@@ -345,6 +339,7 @@ const useStyles = makeStyles((theme) => ({
                 <AccountCircle />
               </IconButton>
             </div>
+
             <div className={classes.sectionMobile}>
               <IconButton
                 aria-label="show more"
@@ -386,7 +381,7 @@ const useStyles = makeStyles((theme) => ({
 
         <main className={classes.content}>
           <div className={classes.appBarSpacer} />
-            <container maxWidth="lg" className={classes.container}>
+            <container className={classes.container}>
               <CenterWin />
             </container>
             <Box>
