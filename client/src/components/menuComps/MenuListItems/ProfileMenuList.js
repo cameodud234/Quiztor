@@ -1,6 +1,6 @@
 export const profileMenuList = [
-    "Sign In",
-    "Sign Up"
+    {content: "Sign In"},
+    {content: "Sign Up"}
 ];
 
 
