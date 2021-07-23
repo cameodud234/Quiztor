@@ -15,9 +15,9 @@ function App () {
 
   useEffect(() => {
     function callAPI() {
-      fetch("http://192.168.1.200:9000/reactAPI")
+      fetch("http://192.168.1.201:9000/reactAPI")
         .then(res => res.text())
-          .then(res => { alert(res); });
+          .then(res => { set_apiResponse(res); console.log(res)});
     }
 
     callAPI();

@@ -1,8 +1,13 @@
 import React from 'react';
-import { mainListItems, secondaryListItems } from "./MenuComps/MenuListItems/SideBarMenuList";
+import {mainListItems, secondaryListItems} from './menuComps/menuListItems/SideBarMenuList';
 
 import CenterWin from './centerComps/CenterWin';
 import Copyright from './Copyright';
+import { profileMenu, loginMenu } from './menuComps/menuListItems/ProfileMenuList';
+import SearchBar from './menuComps/SearchBar';
+
+import SignInForm from './centerComps/SignInForm';
+import SignUpForm from './centerComps/SignUpForm';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -13,17 +18,18 @@ import Divider from '@material-ui/core/Divider';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Box, List } from '@material-ui/core';
+import PopUpWin from './centerComps/PopUpWin';
+
+
 
 
 const drawerWidth = 200;
@@ -61,14 +67,14 @@ const useStyles = makeStyles((theme) => ({
       }),
     },
     menuButton: {
-      // marginRight: theme.spacing(2),
-      marginRight: 36,
+      marginRight: theme.spacing(2),
+      //marginRight: 36,
     },
     menuButtonHidden: {
       display: 'none',
     },
     title: {
-      display: 'none',
+      // display: 'none',
       [theme.breakpoints.up('sm')]: {
         display: 'block',
       },
@@ -104,6 +110,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       height: '100vh',
       overflow: 'auto',
+      backgroundColor: '#282c34',
     },
     fixedHeight: {
       height:240,
@@ -114,29 +121,8 @@ const useStyles = makeStyles((theme) => ({
       paddingBottom: theme.spacing(4),
     },
     appBarSpacer: theme.mixins.toolbar,
-    search: {
-      position: 'relative',
-      borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
-      '&:hover': {
-        backgroundColor: fade(theme.palette.common.white, 0.25),
-      },
-      marginRight: theme.spacing(2),
-      marginLeft: 0,
-      width: '100%',
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
-    },
-    searchIcon: {
-      padding: theme.spacing(0, 2),
-      height: '100%',
-      position: 'absolute',
-      pointerEvents: 'none',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
+    searchHidden: {
+      display: 'none',
     },
     inputRoot: {
       color: 'inherit',
@@ -163,240 +149,306 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
       },
     },
-  }));
+}));
+
+
+function MainWin(props) {
+  const classes = useStyles();
+  const [auth, setAuth] = React.useState(false);
+  const [togglePop, setTogglePop] = React.useState(false);
+  const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
+  const [openMobileMenu, setOpenMobileMenu] = React.useState(true);
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorSign_in, setAnchorSign_in] = React.useState(false);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+  const isProfileMenuOpen = Boolean(anchorEl);
+  const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+  const isSignedIn = Boolean(anchorSign_in);
+
+  const handleDrawerOpen = () => {
+    setOpenDrawer(true);
+    console.log("drawer open");
+  }
+
+  const handleDrawerClose = () => {
+    setOpenDrawer(false);
+    console.log("drawer close");
+  }
+
+  const handleProfileMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+    setProfileOpenMenu(true);
+    console.log("profile menu open");
+  };
+
+  const handleProfileMenuClose = () => {
+    setAnchorEl(null);
+    setProfileOpenMenu(false);
+    console.log("profile menu close");
+    handleMobileMenuClose();
+  };
+
+  const handleMobileMenuOpen = (event) => {
+    setMobileMoreAnchorEl(event.currentTarget);
+    setOpenMobileMenu(true);
+    console.log("mobile menu open");
+  };
+
+  const handleMobileMenuClose = () => {
+    setMobileMoreAnchorEl(null);
+    setOpenMobileMenu(false);
+    console.log("mobile menu close");
+    // if(!openMobileMenu){
+    //   alert("mobile menu closing");
+    // }
+  };
+
+  const sleep = (ms) => new Promise(
+    (r) => setTimeout(r, ms)
+  );
+
+  const handleSignIn = async (event) => {
+    console.log("handleSignIn pressed");
+    handleProfileMenuClose();
+    await sleep(800);
+    // setAnchorEl(event.currentTarget);
+    setTogglePop(true);
+  };
+
+  const handleSignUp = () => {
+    console.log("handleSignUp pressed");
+  };
+
+  const handleProfileBtn = () => {
+    console.log("handleProfileBtn pressed");
+  };
+
+  const handleMyAccountBtn = () => {
+    console.log("handleMyAccountBtn pressed");
+  };
+
+  const handleSignOut = async () => {
+    console.log("handleSignOut pressed");
+    handleProfileMenuClose();
+    await sleep(800);
+    setAuth(false);
+  }
+
+
+  const profileMenuList = [
+    { content: "Sign In", onClick: handleSignIn },
+    { content: "Sign Up", onClick: handleSignUp }
+  ];
+
+  const profileMenuListLogIn = [
+    { content: "Profile", onClick: handleProfileBtn },
+    { content: "My Account", onClick: handleMyAccountBtn },
+    { content: "Sign Out", onClick: handleSignOut }
+  ];
+
+  const profileMenu = profileMenuListLogIn.map(item => {
+    return <MenuItem
+        key={item.content.toString()}
+        onClick={item.onClick}
+    >
+        {item.content}
+    </MenuItem>
+  });
+
+  const loginMenu = profileMenuList.map(item => {
+    return <MenuItem
+        key={item.content.toString()}
+        onClick={item.onClick}
+    >
+        {item.content}
+    </MenuItem>
+  });
+
+  const menuId = 'primary-search-account-menu';
+
   
 
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      id={menuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isProfileMenuOpen}
+      onClose={handleProfileMenuClose}
+    >
+      {!auth && loginMenu}
+      {auth && profileMenu}
+      {/* <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem> */}
+      {/* <MenuItem onClick={handleProfileMenuClose}>Signin</MenuItem> */}
+    </Menu>
+  );
 
+  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const renderMobileMenu = (
+    <Menu
+      anchorEl={mobileMoreAnchorEl}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      id={mobileMenuId}
+      keepMounted
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={isMobileMenuOpen}
+      onClose={handleMobileMenuClose}
+    >
 
-
-  function MainWin(props) {
-    const classes = useStyles();
-    const [auth, setAuth] = React.useState(false);
-    const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
-    const [openMobileMenu, setOpenMobileMenu] = React.useState(true);
-    const [openDrawer, setOpenDrawer] = React.useState(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const [anchorSign_in, setAnchorSign_in] = React.useState(false);
-    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-  
-    const isProfileMenuOpen = Boolean(anchorEl);
-    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-    const isSignedIn = Boolean(anchorSign_in);
-
-    const handleDrawerOpen = () => {
-      setOpenDrawer(true);
-      console.log("drawer open");
-    }
-
-    const handleDrawerClose = () => {
-      setOpenDrawer(false);
-      console.log("drawer close");
-    }
-  
-    const handleProfileMenuOpen = (event) => {
-      setAnchorEl(event.currentTarget);
-      setProfileOpenMenu(true);
-      console.log("profile menu open");
-    };
-
-    const handleProfileMenuClose = () => {
-      setAnchorEl(null);
-      setProfileOpenMenu(false);
-      console.log("profile menu close");
-      handleMobileMenuClose();
-    };
-
-    const handleMobileMenuOpen = (event) => {
-      setMobileMoreAnchorEl(event.currentTarget);
-      setOpenMobileMenu(true);
-      console.log("mobile menu open");
-    };
-  
-    const handleMobileMenuClose = () => {
-      setMobileMoreAnchorEl(null);
-      setOpenMobileMenu(false);
-      console.log("mobile menu close");
-      // if(!openMobileMenu){
-      //   alert("mobile menu closing");
-      // }
-    };
-
-    const handleSign_in = (event) => {
-      setAnchorSign_in(event.currentTarget);
-    }
-  
-    const menuId = 'primary-search-account-menu';
-
-    const renderMenu = (
-      <Menu
-        anchorEl={anchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        id={menuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isProfileMenuOpen}
-        onClose={handleProfileMenuClose}
-      >
-        <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
-        <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem>
-      </Menu>
-    );
-  
-    const mobileMenuId = 'primary-search-account-menu-mobile';
-    const renderMobileMenu = (
-      <Menu
-        anchorEl={mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={isMobileMenuOpen}
-        onClose={handleMobileMenuClose}
-      >
-        <MenuItem>
-          <IconButton aria-label="show 4 new mails" color="inherit">
-            <Badge badgeContent={props.mail_count} color="secondary">
-              <MailIcon />
-            </Badge>
-          </IconButton>
-          <p>Messages</p>
-        </MenuItem>
-        <MenuItem>
-          <IconButton aria-label="show 11 new notifications" color="inherit">
-            <Badge badgeContent={props.notify_count} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton>
-          <p>Notifications</p>
-        </MenuItem> 
-        <MenuItem onClick={handleProfileMenuOpen}>
-          <IconButton
-            aria-label="account of current user"
-            aria-controls="primary-search-account-menu"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <AccountCircle />
-          </IconButton>
-          <p>Profile</p>
-        </MenuItem>
-      </Menu>
-    );
-
-    const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  
-    return (
-      <div className={classes.root}>
-        <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              className={clsx(classes.menuButton, openDrawer && classes.menuButtonHidden)}
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-            >
-              <MenuIcon />
+      {auth && (
+        <div>
+          <MenuItem>
+            <IconButton aria-label="show 4 new mails" color="inherit">
+              <Badge badgeContent={props.mail_count} color="secondary">
+                <MailIcon />
+              </Badge>
             </IconButton>
-            <div className={classes.toolbarIcon}>
-            
-            </div>
-            <Typography className={classes.title} variant="h6" noWrap>
-              Quiztor
-            </Typography>
+            <p>Messages</p>
+          </MenuItem>
+          <MenuItem>
+            <IconButton aria-label="show 11 new notifications" color="inherit">
+              <Badge badgeContent={props.notify_count} color="secondary">
+                <NotificationsIcon />
+              </Badge>
+            </IconButton>
+            <p>Notifications</p>
+          </MenuItem>
+        </div>
+      )}
 
-
-            {/* <div className={classes.search}>
-              <div className={classes.searchIcon}>
-                <SearchIcon />
-              </div>
-              <InputBase
-                placeholder="Search…"
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-                inputProps={{ 'aria-label': 'search' }}
-              />
-            </div> */}
-
-
-
-            <div className={classes.grow} />
-            <div className={classes.sectionDesktop}>
-              {/* <IconButton aria-label="mailCount" color="inherit">
-                <Badge badgeContent={props.mail_count} color="secondary">
-                  <MailIcon />
-                </Badge>
-              </IconButton>
-              <IconButton aria-label="notifyCount" color="inherit">
-                <Badge badgeContent={props.notify_count} color="secondary">
-                  <NotificationsIcon />
-                </Badge>
-              </IconButton> */}
-              <IconButton
-                edge="end"
-                aria-label="account of current user"
-                aria-controls={menuId}
-                aria-haspopup="true"
-                onClick={handleProfileMenuOpen}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-            </div>
-            <div className={classes.sectionMobile}>
-              <IconButton
-                aria-label="show more"
-                aria-controls={mobileMenuId}
-                aria-haspopup="true"
-                onClick={handleMobileMenuOpen}
-                color="inherit"
-              >
-                <MoreIcon />
-              </IconButton>
-            </div>
-          </Toolbar>
-        </AppBar>
-
-
-        {renderMobileMenu}
-        {renderMenu}      
-        
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
-          }}
-          open={openDrawer}
+      <MenuItem onClick={handleProfileMenuOpen}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
         >
-          <div className={classes.toolbarIcon}>
-          <IconButton className={classes.toolbarIcon} onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
+          <AccountCircle />
+        </IconButton>
+        <p>Profile</p>
+      </MenuItem>
+    </Menu>
+  );
+
+  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+
+  return (
+    <div className={classes.root}>
+      <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            className={clsx(classes.menuButton, openDrawer && classes.menuButtonHidden)}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+          >
+            <MenuIcon />
           </IconButton>
+          <div className={classes.toolbarIcon}>
+          
+          </div>
+          <Typography className={classes.title} variant="h6" noWrap>
+            Quiztor
+          </Typography>
+
+          <div className={!auth && classes.searchHidden}>
+            <SearchBar />
           </div>
 
-          <Divider />
+          
 
-          <List>{mainListItems}</List>
-          <List>{secondaryListItems}</List>
-  
+          <div className={classes.grow} />
 
-        </Drawer>
+          <div className={classes.sectionDesktop}>
+            {auth && (
+              <div>
+                <IconButton aria-label="mailCount" color="inherit">
+                  <Badge badgeContent={props.mail_count} color="secondary">
+                    <MailIcon />
+                  </Badge>
+                </IconButton>
+                <IconButton aria-label="notifyCount" color="inherit">
+                  <Badge badgeContent={props.notify_count} color="secondary">
+                    <NotificationsIcon />
+                  </Badge>
+                </IconButton>
+              </div>
+            )}
 
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-            <container maxWidth="lg" className={classes.container}>
-              <CenterWin />
-            </container>
-            <Box>
-              <Copyright />
-            </Box>
-        </main>
-        
+            <IconButton
+              edge="end"
+              aria-label="account of current user"
+              aria-controls={menuId}
+              aria-haspopup="true"
+              onClick={handleProfileMenuOpen}
+              color="inherit"
+            >
+              <AccountCircle />
+            </IconButton>
+          </div>
 
-      </div>
-    );
-  }
+          <div className={classes.sectionMobile}>
+            <IconButton
+              aria-label="show more"
+              aria-controls={mobileMenuId}
+              aria-haspopup="true"
+              onClick={handleMobileMenuOpen}
+              color="inherit"
+            >
+              <MoreIcon />
+            </IconButton>
+          </div>
+        </Toolbar>
+      </AppBar>
+
+
+      {renderMobileMenu}
+      {renderMenu}   
+
+      {togglePop && <PopUpWin />}   
+      
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
+        }}
+        open={openDrawer}
+      >
+        <div className={classes.toolbarIcon}>
+        <IconButton className={classes.toolbarIcon} onClick={handleDrawerClose}>
+          <ChevronLeftIcon />
+        </IconButton>
+        </div>
+
+        <Divider />
+
+        <List>{mainListItems}</List>
+        <List>{secondaryListItems}</List>
+
+
+      </Drawer>
+
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+          <container className={classes.container}>
+            <CenterWin />
+            <SignUpForm />
+            <SignInForm />
+          </container>
+          <Box>
+            <Copyright />
+          </Box>
+      </main>
+      
+
+    </div>
+  );
+}
 
   export default MainWin;

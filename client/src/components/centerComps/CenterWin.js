@@ -1,14 +1,16 @@
 import React, {useState, useEffect } from 'react';
 import logo from '../../logo.svg';
-// import '../../App.css';
+import '../../App.css'
 
 
 function CenterWin() {
     return (
-        <React.Fragment>
-            <header className="App-header">
+        <div className="App">
+            <main className="App-main">
                 <img src={logo} className="App-logo" alt="logo" />
-                <a
+                
+            </main>
+            <a
                 className="App-link"
                 href="https://cameodud234.github.io/"
                 target="_blank"
@@ -16,8 +18,7 @@ function CenterWin() {
                 >
                 My website 
                 </a>
-            </header>
-        </React.Fragment>
+        </div>
     );
 }
 
