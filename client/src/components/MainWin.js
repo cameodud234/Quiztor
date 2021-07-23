@@ -1,10 +1,13 @@
 import React from 'react';
-import { mainListItems, secondaryListItems } from './MenuComps/MenuListItems/SideBarMenuList';
+import {mainListItems, secondaryListItems} from './menuComps/menuListItems/SideBarMenuList';
 
 import CenterWin from './centerComps/CenterWin';
 import Copyright from './Copyright';
-import { profileMenuList, profileMenuListLogIn } from './menuComps/MenuListItems/ProfileMenuList';
+import { profileMenu, loginMenu } from './menuComps/menuListItems/ProfileMenuList';
 import SearchBar from './menuComps/SearchBar';
+
+import SignInForm from './centerComps/SignInForm';
+import SignUpForm from './centerComps/SignUpForm';
 
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -24,6 +27,9 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { Box, List } from '@material-ui/core';
+import PopUpWin from './centerComps/PopUpWin';
+
+
 
 
 const drawerWidth = 200;
@@ -143,12 +149,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'none',
       },
     },
-  }));
+}));
 
 
 function MainWin(props) {
   const classes = useStyles();
   const [auth, setAuth] = React.useState(false);
+  const [togglePop, setTogglePop] = React.useState(false);
   const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
   const [openMobileMenu, setOpenMobileMenu] = React.useState(true);
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -198,19 +205,70 @@ function MainWin(props) {
     // }
   };
 
-  const handleSign_in = (event) => {
-    setAnchorSign_in(event.currentTarget);
+  const sleep = (ms) => new Promise(
+    (r) => setTimeout(r, ms)
+  );
+
+  const handleSignIn = async (event) => {
+    console.log("handleSignIn pressed");
+    handleProfileMenuClose();
+    await sleep(800);
+    // setAnchorEl(event.currentTarget);
+    setTogglePop(true);
+  };
+
+  const handleSignUp = () => {
+    console.log("handleSignUp pressed");
+  };
+
+  const handleProfileBtn = () => {
+    console.log("handleProfileBtn pressed");
+  };
+
+  const handleMyAccountBtn = () => {
+    console.log("handleMyAccountBtn pressed");
+  };
+
+  const handleSignOut = async () => {
+    console.log("handleSignOut pressed");
+    handleProfileMenuClose();
+    await sleep(800);
+    setAuth(false);
   }
 
-  const menuId = 'primary-search-account-menu';
+
+  const profileMenuList = [
+    { content: "Sign In", onClick: handleSignIn },
+    { content: "Sign Up", onClick: handleSignUp }
+  ];
+
+  const profileMenuListLogIn = [
+    { content: "Profile", onClick: handleProfileBtn },
+    { content: "My Account", onClick: handleMyAccountBtn },
+    { content: "Sign Out", onClick: handleSignOut }
+  ];
 
   const profileMenu = profileMenuListLogIn.map(item => {
-    return <MenuItem key={item.toString()} onClick={handleProfileMenuClose}>{item}</MenuItem>
+    return <MenuItem
+        key={item.content.toString()}
+        onClick={item.onClick}
+    >
+        {item.content}
+    </MenuItem>
   });
 
   const loginMenu = profileMenuList.map(item => {
-    return <MenuItem onClick={handleProfileMenuClose}>{item}</MenuItem>
+    return <MenuItem
+        key={item.content.toString()}
+        onClick={item.onClick}
+    >
+        {item.content}
+    </MenuItem>
   });
+
+  const menuId = 'primary-search-account-menu';
+
+  
 
   const renderMenu = (
     <Menu
@@ -351,7 +409,9 @@ function MainWin(props) {
 
 
       {renderMobileMenu}
-      {renderMenu}      
+      {renderMenu}   
+
+      {togglePop && <PopUpWin />}   
       
       <Drawer
         variant="permanent"
@@ -378,6 +438,8 @@ function MainWin(props) {
         <div className={classes.appBarSpacer} />
           <container className={classes.container}>
             <CenterWin />
+            <SignUpForm />
+            <SignInForm />
           </container>
           <Box>
             <Copyright />

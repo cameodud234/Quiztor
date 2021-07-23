@@ -1,5 +1,4 @@
 import { Typography } from '@material-ui/core';
-import { green } from '@material-ui/core/colors';
 import Link from '@material-ui/core/Link';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -7,6 +6,7 @@ const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
       color: "#cfe8fc",
+      padding: theme.spacing(4),
     },
   }));
 
