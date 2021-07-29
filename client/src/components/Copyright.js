@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
       color: "#cfe8fc",
       padding: theme.spacing(4),
+      textAlign: 'center',
     },
   }));
 

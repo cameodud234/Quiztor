@@ -27,7 +27,7 @@ function App () {
   return (
     <div className="App">
       <header className="App-header">
-        < MainWin notify_count="2" mail_count="3" />
+        
         {/* <img src={logo} className="App-logo" alt="logo" />
         <a
           className="App-link"
@@ -38,6 +38,7 @@ function App () {
           My website 
         </a> */}
       </header>
+      < MainWin notify_count={4} mail_count={9} />
       <footer>
         {apiResponse}
       </footer>
