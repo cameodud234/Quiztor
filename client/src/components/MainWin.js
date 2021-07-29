@@ -1,171 +1,147 @@
 import React from 'react';
-import {mainListItems, secondaryListItems} from './menuComps/menuListItems/SideBarMenuList';
-
-import CenterWin from './centerComps/CenterWin';
-import Copyright from './Copyright';
-import { profileMenu, loginMenu } from './menuComps/menuListItems/ProfileMenuList';
-import SearchBar from './menuComps/SearchBar';
-
-import SignInForm from './centerComps/SignInForm';
-import SignUpForm from './centerComps/SignUpForm';
-
-import { fade, makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
+import { MenuItem } from '@material-ui/core';
+import { Badge } from '@material-ui/core';
+import MoreIcon from '@material-ui/icons/MoreVert';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import Drawer from '@material-ui/core/Drawer';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import clsx from 'clsx';
-import Drawer from '@material-ui/core/Drawer';
-import Divider from '@material-ui/core/Divider';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { Box, List } from '@material-ui/core';
-import PopUpWin from './centerComps/PopUpWin';
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
+import SignInPopUp from './centerComps/SignInPopUp';
+import SignUpPopUp from './centerComps/SignUpPopUp';
+import SearchBar from './menuComps/SearchBar';
+import Copyright from './Copyright';
+import ProfileMenuList from './menuComps/menuListItems/ProfileMenuList';
+import CenterWin from './centerComps/CenterWin';
 
-
-
-const drawerWidth = 200;
+const drawerWidth = 150;
 
 const useStyles = makeStyles((theme) => ({
-    root: {
+  grow: {
+    flexGrow: 1,
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    color: "default",
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: drawerWidth,
+    transition: theme.transitions.create(['margin', 'width'], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  title: {
+    // display: 'none',
+    marginLeft: theme.spacing(2),
+    [theme.breakpoints.up('sm')]: {
+      display: 'block',
+    },
+    // flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  menuButtonHide: {
+    display: 'none',
+  },
+  drawer: {
+    width: drawerWidth,
+    flexShrink: 0,
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+  },
+  content: {
+    backgroundColor: '#282c34',
+    flexGrow: 1,
+    overflow: 'auto',
+    
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: 0,
+  },
+  contentShift: {
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+    marginLeft: drawerWidth,
+  },
+  innerContent: {
+    flexDirection: "row",
+  },
+  sectionDesktop: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
       display: 'flex',
     },
-    grow: {
-      flexGrow: 12,
-    },
-    toolbar: {
-      paddingRight: 24,
-    },
-    toolbarIcon: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-end',
-      padding: '0 8px',
-      ...theme.mixins.toolbar,
-    },
-    appBar: {
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-    },
-    appBarShift: {
-      marginLeft: drawerWidth,
-      width: `calc(100% - ${drawerWidth}px)`,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen
-      }),
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-      //marginRight: 36,
-    },
-    menuButtonHidden: {
+  },
+  sectionMobile: {
+    display: 'flex',
+    [theme.breakpoints.up('md')]: {
       display: 'none',
     },
-    title: {
-      // display: 'none',
-      [theme.breakpoints.up('sm')]: {
-        display: 'block',
-      },
-      flexGrow: 1,
-    },
-    paper: {
-      padding: theme.spacing(2),
-      display: 'flex',
-      overflow: 'auto',
-      flexDirection: 'column',
-    },  
-    drawerPaper: {
-      position: 'relative',
-      whiteSpace: 'nowrap',
-      width: drawerWidth,
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.sharp,
-        duration: theme.transitions.enteringScreen,
-      }),
-    },
-    drawerPaperClose: {
-      overflowX: 'hidden',
-      transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      width: theme.spacing(7),
-      [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9),
-      }
-    },
-    content: {
-      flexGrow: 1,
-      height: '100vh',
-      overflow: 'auto',
-      backgroundColor: '#282c34',
-    },
-    fixedHeight: {
-      height:240,
-    },
-    container: {
-      backgroundColor: '#cfe8fc',
-      paddingTop: theme.spacing(4),
-      paddingBottom: theme.spacing(4),
-    },
-    appBarSpacer: theme.mixins.toolbar,
-    searchHidden: {
-      display: 'none',
-    },
-    inputRoot: {
-      color: 'inherit',
-    },
-    inputInput: {
-      padding: theme.spacing(1, 1, 1, 0),
-      // vertical padding + font size from searchIcon
-      paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-      transition: theme.transitions.create('width'),
-      width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
-    },
-    sectionDesktop: {
-      display: 'none',
-      [theme.breakpoints.up('md')]: {
-        display: 'flex',
-      },
-    },
-    sectionMobile: {
-      display: 'flex',
-      [theme.breakpoints.up('md')]: {
-        display: 'none',
-      },
-    },
+  },
+  searchHidden: {
+    display: 'none',
+  }
 }));
-
 
 function MainWin(props) {
   const classes = useStyles();
+  const theme = useTheme();
+  const [openDrawer, setOpenDrawer] = React.useState(false);
   const [auth, setAuth] = React.useState(false);
-  const [togglePop, setTogglePop] = React.useState(false);
+  const [toggleSignInPop, setToggleSignInPop] = React.useState(false);
+  const [toggleSignUpPop, setToggleSignUpPop] = React.useState(false);
   const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
   const [openMobileMenu, setOpenMobileMenu] = React.useState(true);
-  const [openDrawer, setOpenDrawer] = React.useState(false);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [anchorSign_in, setAnchorSign_in] = React.useState(false);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isProfileMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-  const isSignedIn = Boolean(anchorSign_in);
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -200,26 +176,64 @@ function MainWin(props) {
     setMobileMoreAnchorEl(null);
     setOpenMobileMenu(false);
     console.log("mobile menu close");
-    // if(!openMobileMenu){
-    //   alert("mobile menu closing");
-    // }
   };
 
   const sleep = (ms) => new Promise(
     (r) => setTimeout(r, ms)
   );
 
-  const handleSignIn = async (event) => {
-    console.log("handleSignIn pressed");
+  const handleSignInOpen = async () => {
+    console.log("Sign in window opening now");
     handleProfileMenuClose();
-    await sleep(800);
+    await sleep(400);
     // setAnchorEl(event.currentTarget);
-    setTogglePop(true);
+    setToggleSignInPop(true);
   };
 
-  const handleSignUp = () => {
-    console.log("handleSignUp pressed");
+  const handleSignInClose = async () => {
+    console.log("Sign in window closing now");
+    handleProfileMenuClose();
+    setToggleSignInPop(false);
+  }
+
+  const handleSignUpOpen = async () => {
+    console.log("Sign up window opening now");
+    handleProfileMenuClose();
+    await sleep(400);
+    setToggleSignUpPop(true);
+  }
+
+  const handleSignUpClose = async () => {
+    console.log("Sign up window closing now");
+    handleProfileMenuClose();
+    setToggleSignUpPop(false);
+  }
+
+  const handleSignIn = async () => {
+    console.log("Sign in info inputed");
+    handleProfileMenuClose();
+    setOpenDrawer(false);
+    await sleep(800);
+    {/* handle sign-in api here to Express */}
+    // setAuth(true);
+  }
+
+  const handleSignUp = async () => {
+    console.log("Sign up info inputed");
+    handleProfileMenuClose();
+    setOpenDrawer(false);
+    await sleep(800);
+    {/* handle sign-up api here to Express */}
   };
+
+  const handleSignOut = async () => {
+    console.log("handleSignOut pressed");
+    handleProfileMenuClose();
+    setOpenDrawer(false);
+    await sleep(800);
+    {/* handle backend services before signing out here */}
+    // setAuth(false);
+  }
 
   const handleProfileBtn = () => {
     console.log("handleProfileBtn pressed");
@@ -229,17 +243,9 @@ function MainWin(props) {
     console.log("handleMyAccountBtn pressed");
   };
 
-  const handleSignOut = async () => {
-    console.log("handleSignOut pressed");
-    handleProfileMenuClose();
-    await sleep(800);
-    setAuth(false);
-  }
-
-
   const profileMenuList = [
-    { content: "Sign In", onClick: handleSignIn },
-    { content: "Sign Up", onClick: handleSignUp }
+    { content: "Sign In", onClick: handleSignInOpen },
+    { content: "Sign Up", onClick: handleSignUpOpen }
   ];
 
   const profileMenuListLogIn = [
@@ -267,24 +273,19 @@ function MainWin(props) {
   });
 
   const menuId = 'primary-search-account-menu';
-
-  
-
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
       id={menuId}
       keepMounted
       transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       open={isProfileMenuOpen}
       onClose={handleProfileMenuClose}
     >
+      
       {!auth && loginMenu}
       {auth && profileMenu}
-      {/* <MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleProfileMenuClose}>My account</MenuItem> */}
-      {/* <MenuItem onClick={handleProfileMenuClose}>Signin</MenuItem> */}
     </Menu>
   );
 
@@ -335,33 +336,30 @@ function MainWin(props) {
     </Menu>
   );
 
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
   return (
-    <div className={classes.root}>
-      <AppBar position="absolute" className={clsx(classes.appBar, openDrawer && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
+    <div className={classes.grow}>
+      <CssBaseline />
+      <AppBar
+        position="sticky"
+        className={clsx(classes.appBar, openDrawer && classes.appBarShift)}
+      >
+        <Toolbar>
           <IconButton
-            edge="start"
-            className={clsx(classes.menuButton, openDrawer && classes.menuButtonHidden)}
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, openDrawer && classes.menuButtonHide)}
           >
             <MenuIcon />
           </IconButton>
-          <div className={classes.toolbarIcon}>
-          
-          </div>
           <Typography className={classes.title} variant="h6" noWrap>
             Quiztor
           </Typography>
 
-          <div className={!auth && classes.searchHidden}>
+          <div className={clsx(!auth && classes.searchHidden)}>
             <SearchBar />
           </div>
-
-          
 
           <div className={classes.grow} />
 
@@ -404,51 +402,73 @@ function MainWin(props) {
               <MoreIcon />
             </IconButton>
           </div>
+
         </Toolbar>
       </AppBar>
 
-
       {renderMobileMenu}
-      {renderMenu}   
+      {renderMenu}
 
-      {togglePop && <PopUpWin />}   
-      
+
       <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !openDrawer && classes.drawerPaperClose),
-        }}
+        className={classes.drawer}
+        variant="persistent"
+        anchor="left"
         open={openDrawer}
+        classes={{
+          paper: classes.drawerPaper,
+        }}
       >
-        <div className={classes.toolbarIcon}>
-        <IconButton className={classes.toolbarIcon} onClick={handleDrawerClose}>
-          <ChevronLeftIcon />
-        </IconButton>
+        <div className={classes.drawerHeader}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+          </IconButton>
         </div>
-
         <Divider />
-
-        <List>{mainListItems}</List>
-        <List>{secondaryListItems}</List>
-
-
+        <List>
+          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
+        <Divider />
+        <List>
+          {['All mail', 'Trash', 'Spam'].map((text, index) => (
+            <ListItem button key={text}>
+              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+              <ListItemText primary={text} />
+            </ListItem>
+          ))}
+        </List>
       </Drawer>
+      <main
+        className={clsx(classes.content, openDrawer && classes.contentShift)}
+      >
+        <div className={classes.drawerHeader}/>
+        
+        < SignUpPopUp open={toggleSignUpPop} handleClose={handleSignUpClose} />
+        < SignInPopUp open={toggleSignInPop} handleClose={handleSignInClose} />
+        
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        <CenterWin />
+        
 
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-          <container className={classes.container}>
-            <CenterWin />
-            <SignUpForm />
-            <SignInForm />
-          </container>
-          <Box>
-            <Copyright />
-          </Box>
+        <Copyright />
       </main>
-      
-
     </div>
   );
 }
 
-  export default MainWin;
+export default MainWin;
+ 
