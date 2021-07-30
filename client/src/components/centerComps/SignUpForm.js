@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Formik, Field, Form } from 'formik';
 
+let val = null;
+
 const sleep = (ms) => new Promise(
     (r) => setTimeout(r, ms)
 );
@@ -18,7 +20,13 @@ function SignUpForm() {
         }}
         onSubmit={async (values) => {
             await sleep(500);
-            alert(JSON.stringify(values, null, 2));
+            let tmp = JSON.stringify(values, null, 2)
+            for(let i in values){
+                let tmp = i;
+                if(i == "firstName") val = values[i];
+            }
+            alert(tmp);
+            console.log(val);
         }}
         >
         {({ isSubmitting }) => (
