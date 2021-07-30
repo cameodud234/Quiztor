@@ -29,8 +29,10 @@ function SignInForm() {
         >
         {({ isSubmitting }) => (
             <Form>
+            <label htmlFor="email">Email</label>
             <Field type="email" name="email" />
             <ErrorMessage name="email" component="div" />
+            <label htmlFor="password" name="password">Password</label>
             <Field type="password" name="password" />
             <ErrorMessage name="password" component="div" />
             <button type="submit" disabled={isSubmitting}>

@@ -456,12 +456,6 @@ function MainWin(props) {
         <CenterWin />
         <CenterWin />
         <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin />
         
 
         <Copyright />
