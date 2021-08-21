@@ -1,7 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 
-
+let vals = null;
 
 function SignInForm() {
   return (
@@ -22,15 +22,18 @@ function SignInForm() {
         }}
         onSubmit={(values, { setSubmitting }) => {
             setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            let tmp = JSON.stringify(values, null, 2);
+            alert(tmp);
             setSubmitting(false);
             }, 400);
         }}
         >
         {({ isSubmitting }) => (
             <Form>
+            <label htmlFor="email">Email</label>
             <Field type="email" name="email" />
             <ErrorMessage name="email" component="div" />
+            <label htmlFor="password" name="password">Password</label>
             <Field type="password" name="password" />
             <ErrorMessage name="password" component="div" />
             <button type="submit" disabled={isSubmitting}>
