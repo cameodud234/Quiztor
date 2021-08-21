@@ -131,7 +131,7 @@ function MainWin(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [auth, setAuth] = React.useState(false);
+  const [auth, setAuth] = React.useState(true);
   const [toggleSignInPop, setToggleSignInPop] = React.useState(false);
   const [toggleSignUpPop, setToggleSignUpPop] = React.useState(false);
   const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
@@ -232,15 +232,17 @@ function MainWin(props) {
     setOpenDrawer(false);
     await sleep(800);
     {/* handle backend services before signing out here */}
-    // setAuth(false);
+    setAuth(false);
   }
 
   const handleProfileBtn = () => {
     console.log("handleProfileBtn pressed");
+    handleProfileMenuClose();
   };
 
   const handleMyAccountBtn = () => {
     console.log("handleMyAccountBtn pressed");
+    handleProfileMenuClose();
   };
 
   const profileMenuList = [
@@ -456,7 +458,7 @@ function MainWin(props) {
         <CenterWin />
         <CenterWin />
         <CenterWin />
-        
+
 
         <Copyright />
       </main>
