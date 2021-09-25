@@ -41,7 +41,7 @@ function SignUpForm() {
             >
             {({ isSubmitting }) => (
                 <Form>
-                    <div className={}>
+                    <div>
                         <label htmlFor="firstName">First Name</label>
                         <Field name="firstName" placeholder="Jane" />
                     </div>
