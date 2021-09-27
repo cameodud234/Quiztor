@@ -6,9 +6,11 @@ var logger = require('morgan');
 var cors = require('cors');
 
 
+require("./db-connection")
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var reactRouter = require('./routes/reactAPI');
+const UserRoutes = require("./routes/users");
 var app = express();
 
 
@@ -26,7 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
+app.use(UserRoutes)
 app.use('/reactAPI', reactRouter);
 
 // catch 404 and forward to error handler
@@ -44,5 +47,9 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+app.listen(3001, ()=> {
+  console.log("Server running at port 3001")
+})
 
 module.exports = app;
