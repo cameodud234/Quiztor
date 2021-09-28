@@ -131,7 +131,7 @@ function MainWin(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [auth, setAuth] = React.useState(true);
+  const [auth, setAuth] = React.useState(false);
   const [toggleSignInPop, setToggleSignInPop] = React.useState(false);
   const [toggleSignUpPop, setToggleSignUpPop] = React.useState(false);
   const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
