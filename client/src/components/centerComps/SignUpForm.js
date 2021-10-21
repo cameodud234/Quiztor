@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
 import { makeStyles } from '@material-ui/core';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import axios from 'axios';
 
 
 const useStyles = makeStyles(() => ({
@@ -17,19 +18,6 @@ const sleep = (ms) => new Promise(
 function SignUpForm() {
 
     const classes = useStyles();
-    const [userData, setUserData] = useState();
-
-    useEffect(() => {
-
-        function sendUserData() {
-          fetch("http://localhost:9000/reactAPI")
-            .then(res => res.text())
-              .then(res => { setUserData(res); });
-        }
-    
-        sendUserData();
-    
-    });
 
     return(
         <div>
@@ -37,24 +25,33 @@ function SignUpForm() {
             <Formik
             initialValues={{
                 username: '',
-                email: '',
+                // email: '',
                 password: ''
             }}
             validate={values => {
                 const errors = {};
-                if (!values.email) {
-                errors.email = 'Required';
-                } else if (
-                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-                ) {
-                errors.email = 'Invalid email address';
+                if (values.username || values.password == ""){
+                    errors.username = 'Required';
+                    errors.password = 'Required';
                 }
+                // if (!values.email) {
+                // errors.email = 'Required';
+                // } else if (
+                // !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+                // ) {
+                // errors.email = 'Invalid email address';
+                // }
                 return errors;
             }}
-            onSubmit={async (values) => {
+            onSubmit={async (values, {setSubmitting}) => {
                 await sleep(500);
-                let tmp = JSON.stringify(values, null, 3);
-                console.log(tmp);
+                // let tmp = JSON.stringify(values, null, 3);
+                setSubmitting(true);
+                axios.post('http://localhost:3001/users', {
+                    username: values.username,
+                    // email: values.email,
+                    password: values.password
+                })
             }}
             >
             {({ isSubmitting }) => (
@@ -62,17 +59,19 @@ function SignUpForm() {
                     <div>
                         <label htmlFor="username">Username</label>
                         <Field name="username" placeholder="username"/>
+                        <ErrorMessage name="username" component="div" />
                     </div>
 
-                    <div>
+                    {/* <div>
                         <label htmlFor="email">Email</label>
                         <Field name="email" placeholder="jane@acme.com" type="email" />
                         <ErrorMessage name="email" component="div" />
-                    </div>
+                    </div> */}
 
                     <div>
                         <label htmlFor="password">Password</label>
                         <Field name="password" placeholder="Password" type="password" />
+                        <ErrorMessage name="password" component="div" />
                     </div>
 
                     {/* <div>

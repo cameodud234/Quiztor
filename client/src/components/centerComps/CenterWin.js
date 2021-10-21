@@ -20,14 +20,14 @@ function CenterWin() {
                 <img src={logo} className="App-logo" alt="logo" />
                 
             </main>
-            <a
+            {/* <a
                 className="App-link"
                 href="https://cameodud234.github.io/"
                 target="_blank"
                 rel="noopener noreferrer"
                 >
                 My website 
-            </a>
+            </a> */}
 
 
             <Typography paragraph>

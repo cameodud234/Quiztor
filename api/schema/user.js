@@ -8,7 +8,6 @@ const userSchema = new Schema({
     // lastName : String,
     // age : Number,
     // profilePhoto : native file link
-    
 })
 
 const UserModel = mongoose.model("user", userSchema, "users");

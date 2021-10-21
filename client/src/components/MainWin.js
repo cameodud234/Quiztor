@@ -448,17 +448,13 @@ function MainWin(props) {
       <main
         className={clsx(classes.content, openDrawer && classes.contentShift)}
       >
-        <div className={classes.drawerHeader}/>
+        {/* <div className={classes.drawerHeader}/> */}
         
         < SignUpPopUp open={toggleSignUpPop} handleClose={handleSignUpClose} />
         < SignInPopUp open={toggleSignInPop} handleClose={handleSignInClose} />
         
         <CenterWin />
-        {/* <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin />
-        <CenterWin /> */}
+        
 
 
         <Copyright />

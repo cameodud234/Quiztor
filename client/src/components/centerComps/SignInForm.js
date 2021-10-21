@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { makeStyles } from '@material-ui/core';
+import axios from 'axios';
 
 const useStyles = makeStyles(() => ({
     spacing: {
@@ -14,11 +15,7 @@ const sleep = (ms) => new Promise(
 
 function SignInForm() {
 
-    // useEffect(()=>{
-    //     function callAPI() {
-    //         fetch("http://localhost:9000/reactAPI").then
-    //     }
-    // });
+    const classes = useStyles();
 
     return (
         <div>
@@ -27,13 +24,24 @@ function SignInForm() {
             initialValues={{ username: '', password: '' }}
             validate={values =>{
                 const errors = {};
-                // place errors in string here...
+                if(values.username == ''){
+                    errors.username = 'Required';
+                }
+                if(values.password == ''){
+                    errors.password = 'Required'
+                }
+                return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
                 await sleep(500);
                 let tmp = JSON.stringify(values, null, 2);
                 alert(tmp);
                 setSubmitting(true);
+                axios.post('http://localhost:3001/users', {
+                    username: values.username,
+                    // email: values.email,
+                    password: values.password
+                })
             }}
             >
             {({ isSubmitting }) => (
@@ -41,6 +49,7 @@ function SignInForm() {
                     <div>
                         <label htmlFor="username">Username</label>
                         <Field type="username" name="username" />
+                        <ErrorMessage name="username" component="div" />
                     </div>
 
                     <div>
