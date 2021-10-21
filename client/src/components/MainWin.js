@@ -454,10 +454,11 @@ function MainWin(props) {
         < SignInPopUp open={toggleSignInPop} handleClose={handleSignInClose} />
         
         <CenterWin />
+        {/* <CenterWin />
         <CenterWin />
         <CenterWin />
         <CenterWin />
-        <CenterWin />
+        <CenterWin /> */}
 
 
         <Copyright />

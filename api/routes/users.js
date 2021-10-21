@@ -9,11 +9,11 @@ router.get("/users", (req, res) => {
     });
 })
 
-router.post("/users", (req, res) => {
+router.post("/users", async (req, res) => {
     const body = req.body;
 
-    if(body.username && body.username != "") {
-        const user = new UserModel(body);
+    if(body.username && body.password != "") {
+        const user = await UserModel.create(req.body);
         user.save((error) => {
             if(error) {
                 res.send({ status : "ERROR", message : "Unable to store user"});
