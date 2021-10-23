@@ -4,7 +4,6 @@ const MONGO_URI = "mongodb+srv://admin:ad031579031579@quiztor.undww.mongodb.net/
 mongoose.connect( MONGO_URI, {
     useNewUrlParser : true,
 }).then(() => {
-    console.log(MONGO_URI);
     console.log("Successfully connected to database");
 })
 .catch((err) => {
