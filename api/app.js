@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const dotenv = require('dotenv');
 
 
 const dbConnect = require('./db-connection');
@@ -13,6 +14,8 @@ const reactRouter = require('./routes/reactAPI');
 const UserRoutes = require("./routes/users");
 const app = express();
 
+
+dotenv.config();
 
 
 

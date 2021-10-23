@@ -30,8 +30,10 @@ function SignUpForm() {
             }}
             validate={values => {
                 const errors = {};
-                if (values.username || values.password == ""){
+                if (values.username == ''){
                     errors.username = 'Required';
+                }
+                if(values.password == ''){
                     errors.password = 'Required';
                 }
                 // if (!values.email) {
@@ -51,7 +53,7 @@ function SignUpForm() {
                     username: values.username,
                     // email: values.email,
                     password: values.password
-                })
+                }).then((response) => console.log(response)).catch(err => console.log(err));
             }}
             >
             {({ isSubmitting }) => (

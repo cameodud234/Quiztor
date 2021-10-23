@@ -34,14 +34,12 @@ function SignInForm() {
             }}
             onSubmit={async (values, { setSubmitting }) => {
                 await sleep(500);
-                let tmp = JSON.stringify(values, null, 2);
-                alert(tmp);
                 setSubmitting(true);
-                axios.post('http://localhost:3001/users', {
+                axios.get('http://localhost:3001/users', {
                     username: values.username,
                     // email: values.email,
                     password: values.password
-                })
+                }).then((response) => console.log(response)).catch(err => console.log(err));
             }}
             >
             {({ isSubmitting }) => (
