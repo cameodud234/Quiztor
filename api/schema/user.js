@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 // tokens for authentication purposes
 const userSchema = new Schema({
     username : {type: String, unique: true},
-    password : String,
-    token: String,
+    password : {type: String},
+    token: {type: String},
 });
 
 // This will be the updated schema the mongoose database
@@ -20,6 +20,6 @@ const userSchema = new Schema({
 //     .. ,
 // })
 
-const UserModel = mongoose.model("user", userSchema, "users");
+const UserModel = mongoose.model("user", userSchema);
 
 module.exports = UserModel;

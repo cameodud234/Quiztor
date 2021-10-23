@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const UserModel = require('../schema/user');
+const authentication = require('../middleware/authentication');
 
 router.get("/showUsers", (req, res) => {
     UserModel.find((error, data) => {
@@ -58,11 +59,14 @@ router.post("/users", async (req, res, next) => {
             if(oldUser){
                 return res.send({status: "Error", message: "User Already exists. Please login..."});
             }
+            console.log(body);
             encryptPW = await bcrypt.hash(body.password, 10);
             const user = await UserModel.create({
                 username: body.username,
                 password: encryptPW,
             });
+
+            console.log(user);
 
             const token = jwt.sign(
                 {user_id: body.username},
@@ -73,6 +77,7 @@ router.post("/users", async (req, res, next) => {
             );
 
             user.token = token;
+            console.log(`token: ${token}`);
 
             res.send({ status : "SUCCESS", mesage : "User successfully added"});
 
@@ -92,5 +97,13 @@ router.post("/users", async (req, res, next) => {
     }
 
 })
+
+router.post("/welcome", authentication, (req, res, next) => {
+    try {
+        res.send({status: "200", message: "Welcome fellow user"});
+    } catch (err) {
+        next(err);
+    }
+});
 
 module.exports = router;
