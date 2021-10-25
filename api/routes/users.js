@@ -77,16 +77,13 @@ router.post("/users", async (req, res, next) => {
             );
 
             user.token = token;
-            console.log(`token: ${token}`);
 
-            res.send({ status : "SUCCESS", mesage : "User successfully added"});
-
-            // user.save((error) => {
-            //     if(error) {
-            //         res.send({ status : "ERROR", message : "Unable to store user"});
-            //     }
-            //     res.send({ status : "SUCCESS", mesage : "User successfully added"});
-            // });
+            user.save((error) => {
+                if(error) {
+                    res.send({ status : "ERROR", message : "Unable to store user"});
+                }
+                res.send({ status : "SUCCESS", mesage : "User successfully added"});
+            });
         } else {
             res.send({ 
                 status : "ERROR", message : "Username or password not specified"

@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
         return res.send({status: 403, message: "A token is required for authentication"});
     }
     try {
-        const decoded = jwt.verify(token, ocnfig.TOKEN_KEY);
+        const decoded = jwt.verify(token, config.JWT_KEY);
         req.user = decoded;
     } catch (err) {
         next(err);
