@@ -35,11 +35,13 @@ function SignInForm() {
             onSubmit={async (values, { setSubmitting }) => {
                 await sleep(500);
                 setSubmitting(true);
-                axios.get('http://localhost:3001/users', {
+                axios.get('http://localhost:9000/users', {
                     username: values.username,
                     // email: values.email,
                     password: values.password
-                }).then((response) => console.log(response)).catch(err => console.log(err));
+                })
+                .then((res) => console.log(`logger: ${res.data}`))
+                .catch(err => console.log(err));
             }}
             >
             {({ isSubmitting }) => (

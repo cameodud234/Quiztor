@@ -4,6 +4,7 @@ const config = process.env;
 
 const verifyToken = (req, res, next) => {
     const token = req.body.token || req.query.token || req.headers["x-access-token"];
+    
     if(!token){
         return res.send({status: 403, message: "A token is required for authentication"});
     }

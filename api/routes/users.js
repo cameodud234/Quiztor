@@ -5,6 +5,7 @@ const router = express.Router();
 const UserModel = require('../schema/user');
 const authentication = require('../middleware/authentication');
 
+// for testing purposes ONLY!!
 router.get("/showUsers", (req, res) => {
     UserModel.find((error, data) => {
         res.json(data);

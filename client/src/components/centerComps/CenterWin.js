@@ -16,6 +16,9 @@ function CenterWin() {
     const classes = useStyles();
     return (
         <div className={classes.root}>
+            <header>
+                <h1>My Post</h1>
+            </header>
             <main className="App-main">
                 <img src={logo} className="App-logo" alt="logo" />
                 
