@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 // tokens for authentication purposes
 const userSchema = new Schema({
     username : {type: String, unique: true},
+    email: {type: String},
     password : {type: String},
     token : {type: String},
 });
