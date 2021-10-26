@@ -29,7 +29,8 @@ import SignUpPopUp from './centerComps/SignUpPopUp';
 import SearchBar from './MenuComps/SearchBar';
 import Copyright from './Copyright';
 // import ProfileMenuList from './menuComps/menuListItems/ProfileMenuList';
-import CenterWin from './centerComps/CenterWin';
+import Post from './centerComps/PostWin';
+import HomeWin from './centerComps/HomeWin';
 
 const drawerWidth = 150;
 
@@ -124,6 +125,9 @@ const useStyles = makeStyles((theme) => ({
   },
   searchHidden: {
     display: 'none',
+  },
+  importList: {
+    display: 'none',
   }
 }));
 
@@ -131,7 +135,11 @@ function MainWin(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [openDrawer, setOpenDrawer] = React.useState(false);
-  const [auth, setAuth] = React.useState(false);
+
+  // we need the state 'auth' to depend on the backend 
+  const [auth, setAuth] = React.useState(props.authVal);
+
+
   const [toggleSignInPop, setToggleSignInPop] = React.useState(false);
   const [toggleSignUpPop, setToggleSignUpPop] = React.useState(false);
   const [openProfileMenu, setProfileOpenMenu] = React.useState(true);
@@ -453,8 +461,13 @@ function MainWin(props) {
         < SignUpPopUp open={toggleSignUpPop} handleClose={handleSignUpClose} />
         < SignInPopUp open={toggleSignInPop} handleClose={handleSignInClose} />
         
-        <CenterWin />
+        <div className={clsx(auth && classes.importList)}>
+          < HomeWin />
+        </div>
         
+        <div className={clsx(!auth && classes.importList)}>
+          <Post />
+        </div>
 
 
         <Copyright />

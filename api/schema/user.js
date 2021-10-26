@@ -24,17 +24,15 @@ const userSchema = new Schema({
     },
 });
 
-// This will be the updated schema the mongoose database
-
-// const userSchema = new Schema({
-//     username : { type: String, unique: true},
-//     email: {type: String, unique: true},
-//     password : String,
-//     age : Number,
-//     profilePhoto : native file link,
-//     othercrap... ,
-//     .. ,
+// userSchema.pre('save', function(next) {
+//     console.log('user about to be created and saved',this);
+//     next();
 // })
+
+// userSchema.post('save', function(doc, next) {
+//     console.log('new user was created and saved', doc);
+//     next();
+// });
 
 const UserModel = mongoose.model("users", userSchema);
 

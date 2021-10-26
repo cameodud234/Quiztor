@@ -1,114 +1,85 @@
 import React from 'react';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { makeStyles } from '@material-ui/core';
+import ReactDOM from 'react-dom';
+import { useFormik } from 'formik';
 import axios from 'axios';
-
+import * as yup from 'yup';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-
-const useStyles = makeStyles((theme) => ({
-    spacing: {
-        padding: 10,
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import { Typography } from '@material-ui/core';
 
 const sleep = (ms) => new Promise(
     (r) => setTimeout(r, ms)
 );
 
-function SignInForm() {
+const validationSchema = yup.object({
+  username: yup
+    .string('Enter your username')
+    .required('Username is required'),
+  password: yup
+    .string('Enter your password')
+    .min(8, 'Password should be of minimum 8 characters length')
+    .required('Password is required'),
+});
 
-    const classes = useStyles();
+const SignInForm = () => {
+  const formik = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (values, {setSubmitting}) => {
+        await sleep(500);
+        //let vals = JSON.stringify(values,0,3);
+        setSubmitting(true);
+        
+        await axios.get('http://localhost:9000/login', {
+            username: values.username,
+            password: values.password
+        })
+        .then((res) => {
+            values.username = "";
+            values.password = "";
+        })
+        .catch((err) => console.log(err));
+        console.log(values);
+    },
+  });
 
-    return (
-        <div>
-            <Typography component="h1" variant="h4">
-                Sign in
-            </Typography>
-            <Formik
-                initialValues={{ username: '', password: '' }}
-                validate={values =>{
-                    const errors = {};
-                    if(values.username == ''){
-                        errors.username = 'Required';
-                    }
-                    if(values.password == ''){
-                        errors.password = 'Required'
-                    }
-                    return errors;
-                }}
-                onSubmit={async (values, { setSubmitting }) => {
-                    await sleep(500);
-                    setSubmitting(true);
-                    axios.get('http://localhost:9000/signup', {
-                        username: values.username,
-                        email: values.email,
-                        password: values.password
-                    })
-                    .then((res) => console.log(`logger: ${res.data}`))
-                    .catch(err => console.log(err));
-                }}
-                >
-                {({ isSubmitting }) => (
-                    
-                    <form className={classes.form} noValidate>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        {/* <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"
-                        /> */}
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            disabled={isSubmitting}
-                            className={classes.submit}
-                        >
-                            Sign In
-                        </Button>
-                        {/* <Grid container>
-                            <Grid item xs>
-                            <Link href="#" variant="body2">
-                                Forgot password?
-                            </Link>
-                            </Grid>
-                            <Grid item>
-                            <Link href="#" variant="body2">
-                                {"Don't have an account? Sign Up"}
-                            </Link>
-                            </Grid>
-                        </Grid> */}
-                    </form>
-                )}
-            </Formik>
-        </div>
-    );
-}
+  return (
+    <div>
+        <Typography component="h1" variant="h4">
+                Login
+        </Typography>
+        <form onSubmit={formik.handleSubmit}>
+            <TextField
+                fullWidth
+                id="username"
+                name="username"
+                label="username"
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                error={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
+            />
+            <TextField
+                fullWidth
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
+            />
+            <Button color="primary" variant="contained" fullWidth type="submit" >
+                Submit
+            </Button>
+        </form>
+    </div>
+  );
+};
+
 
 export default SignInForm;

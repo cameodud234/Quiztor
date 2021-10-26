@@ -29,15 +29,12 @@ module.exports.signup_post = async (req, res, next) => {
             if(oldUser){
                 return res.send({status: "Error", message: "User Already exists. Please login..."});
             }
-            console.log(body);
             encryptPW = await bcrypt.hash(body.password, 10);
             const user = await UserModel.create({
                 username: body.username,
                 email: body.email,
                 password: encryptPW,
             });
-
-            console.log(user);
 
             const token = jwt.sign(
                 {user_id: body.username},
@@ -73,7 +70,6 @@ module.exports.login_post = async (req, res, next) => {
 module.exports.login_get = async (req, res, next) => {
     try {
         const body = req.body;
-        console.log(body.username);
         if(body.username === ""|| body.email === "" || body.password === ""){
             res.send({status: "ERROR", message: "All input is required"});
         }

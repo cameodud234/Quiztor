@@ -5,6 +5,7 @@ import './App.css';
 import React, {useState, useEffect } from 'react';
 import MainWin from './components/MainWin';
 import Copyright from './components/Copyright';
+import { TrendingUpOutlined } from '@material-ui/icons';
 // import { Typography } from '@material-ui/core';
 // import Link from '@material-ui/core/Link';
 
@@ -12,11 +13,16 @@ import Copyright from './components/Copyright';
 function App () {
 
   const [apiResponse, set_apiResponse] = useState();
+  const [authenticate, setAuthenticate] = useState();
 
   useEffect(() => {
     function callAPI() {
       fetch("http://localhost:9000/reactAPI")
-        .then(res => res.text())
+        .then((res) => {
+          setAuthenticate(true);
+          res.text();
+          }
+        )
           .then(res => { set_apiResponse(res); });
     }
 
@@ -38,7 +44,10 @@ function App () {
           My website 
         </a> */}
       </header>
-      < MainWin notify_count={4} mail_count={9} />
+
+      {/* This 'authVal' will be used to changed the layout of the 
+      view when someone is signed in vs not */}
+      < MainWin notify_count={4} mail_count={9} authVal={authenticate} />
       <footer>
         {apiResponse}
       </footer>
