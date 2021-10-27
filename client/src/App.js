@@ -47,7 +47,7 @@ function App () {
 
       {/* This 'authVal' will be used to changed the layout of the 
       view when someone is signed in vs not */}
-      < MainWin notify_count={4} mail_count={9} authVal={authenticate} />
+      < MainWin notify_count={4} mail_count={9} authVal={true} />
       <footer>
         {apiResponse}
       </footer>

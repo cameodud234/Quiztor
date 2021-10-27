@@ -10,8 +10,10 @@ const dotenv = require('dotenv');
 const dbConnect = require('./db-connection');
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
 const reactRouter = require('./routes/reactAPI');
 const UserRoutes = require('./routes/users');
+const PostRoutes = require('./routes/posts');
 const app = express();
 
 
@@ -31,7 +33,9 @@ app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
 app.use(UserRoutes);
+app.use(PostRoutes);
 app.use('/reactAPI', reactRouter);
 
 // catch 404 and forward to error handler
