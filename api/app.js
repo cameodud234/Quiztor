@@ -1,19 +1,23 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var cors = require('cors');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const cors = require('cors');
+const dotenv = require('dotenv');
 
 
-require("./db-connection")
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var reactRouter = require('./routes/reactAPI');
-const UserRoutes = require("./routes/users");
-var app = express();
+const dbConnect = require('./db-connection');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const postsRouter = require('./routes/posts');
+const reactRouter = require('./routes/reactAPI');
+const UserRoutes = require('./routes/users');
+const PostRoutes = require('./routes/posts');
+const app = express();
 
 
+dotenv.config();
 
 
 // view engine setup
@@ -28,8 +32,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-app.use(UserRoutes)
+app.use('/users', usersRouter);
+app.use('/posts', postsRouter);
+app.use(UserRoutes);
+app.use(PostRoutes);
 app.use('/reactAPI', reactRouter);
 
 // catch 404 and forward to error handler
@@ -48,8 +54,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(3001, ()=> {
-  console.log("Server running at port 3001")
-})
+// app.listen(3001, ()=> {
+//   console.log("Server running at port 3001")
+// })
 
 module.exports = app;

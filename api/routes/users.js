@@ -1,30 +1,21 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const UserModel = require("../schema/user");
+// const authentication = require('../middleware/authentication');
+const authController = require('../controller/authController');
 
-router.get("/users", (req, res) => {
-    UserModel.find((error, data) => {
-        res.json(data);
-        console.log(data);
-    })
-})
+// FOR TESTING PURPOSES!!!
+router.get("/showUsers", authController.showUsers_get);
 
-router.post("/users", (req, res) => {
-    const body = req.body;
+router.get("/login", authController.login_get);
 
-    if(body.username && body.username != "") {
-        const user = new UserModel(body)
-        user.save((error) => {
-            if(error) {
-                res.send({ status : "ERROR", message : "Unable to store user"})
-            }
-            res.send({ status : "SUCCESS", mesage : "User successfully added"})
-        })
-    } else {
-        res.send({ 
-            status : "ERROR", message : "Username not specified"
-        })
-    }
-})
+router.post("/login", authController.login_post);
+
+router.post("/signup", authController.signup_post);
+
+
+
+router.post("/welcome", authController.authHome_post);
+// adding the middleware "authentication" breaks this post req.
+// router.post("/welcome", authentication, authController.authHome_post);
 
 module.exports = router;
