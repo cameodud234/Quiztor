@@ -26,7 +26,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import SignInPopUp from './centerComps/SignInPopUp';
 import SignUpPopUp from './centerComps/SignUpPopUp';
-import SearchBar from './MenuComps/SearchBar';
+import { SearchBar, ListPosts } from './MenuComps/SearchBar';
 import Copyright from './Copyright';
 // import ProfileMenuList from './menuComps/menuListItems/ProfileMenuList';
 import Post from './centerComps/PostWin';
@@ -466,9 +466,8 @@ function MainWin(props) {
         </div>
         
         <div className={clsx(!auth && classes.importList)}>
-          <Post />
+          <ListPosts />
         </div>
-
 
         <Copyright />
       </main>

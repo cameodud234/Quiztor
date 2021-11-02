@@ -9,4 +9,6 @@ router.post("/post", authController.post_post);
 
 router.get("/post", authController.post_get);
 
+router.get("/showQuery", authController.showQuery_post);
+
 module.exports = router;

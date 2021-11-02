@@ -12,12 +12,21 @@ module.exports.showUsers_get = (req, res, next) => {
     });
 }
 
+// FOR TESTING PURPOSES!!!
 module.exports.showPosts_get = (req, res, next) => {
     PostModel.find((err, data) => {
         res.json(data);
         console.log(data);
     });
 }
+
+module.exports.showQuery_post = (req, res, next) => {
+    let userData = req.query;
+    PostModel.find({classifier: {$regex: new RegExp(userData.searchText)}},(err, data) => {
+        res.json(data);
+        console.log(data);
+    });
+} 
 
 
 module.exports.authHome_post = (req, res, next) => {

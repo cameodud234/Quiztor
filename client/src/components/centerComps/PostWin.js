@@ -11,12 +11,12 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function Post() {
+function Post(props) {
     const classes = useStyles();
     return (
         <div className={classes.root}>
             <header>
-                <h1>My Post</h1>
+                <h1>User: {props.username} </h1>
             </header>
             {/* <a
                 className="App-link"
@@ -26,9 +26,9 @@ function Post() {
                 >
                 My website 
             </a> */}
-
-
-            <Typography paragraph>
+            
+            <h3>{props.data}</h3>
+            {/* <Typography paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
             ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
             facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
@@ -50,7 +50,7 @@ function Post() {
             tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
             nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
             accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-            </Typography>
+            </Typography> */}
 
 
         </div>
