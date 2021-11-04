@@ -20,13 +20,14 @@ module.exports.showPosts_get = (req, res, next) => {
     });
 }
 
-module.exports.showQuery_post = (req, res, next) => {
+
+module.exports.showQuery_post = async (req, res, next) => {
     let userData = req.query;
-    PostModel.find({classifier: {$regex: new RegExp(userData.searchText)}},(err, data) => {
+    await PostModel.find({classifier: {$regex: new RegExp(userData.searchText)}},(err, data) => {
         res.json(data);
         console.log(data);
     });
-} 
+}
 
 
 module.exports.authHome_post = (req, res, next) => {

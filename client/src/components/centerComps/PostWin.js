@@ -16,7 +16,7 @@ function Post(props) {
     return (
         <div className={classes.root}>
             <header>
-                <h1>User: {props.username} </h1>
+                <h2>Title: {props.title} </h2>
             </header>
             {/* <a
                 className="App-link"
@@ -27,7 +27,11 @@ function Post(props) {
                 My website 
             </a> */}
             
-            <h3>{props.data}</h3>
+            <h3>
+                description:{props.description},
+                meme_text{props.m_text}
+                <p>Im happy today</p>
+            </h3>
             {/* <Typography paragraph>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
             ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum

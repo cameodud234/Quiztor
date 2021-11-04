@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { alpha, makeStyles, useTheme } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import { MenuItem } from '@material-ui/core';
 import { Badge } from '@material-ui/core';
@@ -23,14 +23,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 import MailIcon from '@material-ui/icons/Mail';
 import AccountCircle from '@material-ui/icons/AccountCircle';
+import InputBase from '@material-ui/core/InputBase';
+import SearchIcon from '@material-ui/icons/Search';
 
 import SignInPopUp from './centerComps/SignInPopUp';
 import SignUpPopUp from './centerComps/SignUpPopUp';
-import { SearchBar, ListPosts } from './MenuComps/SearchBar';
+// import { SearchBar, ListPosts } from './MenuComps/SearchBar';
 import Copyright from './Copyright';
 // import ProfileMenuList from './menuComps/menuListItems/ProfileMenuList';
 import Post from './centerComps/PostWin';
 import HomeWin from './centerComps/HomeWin';
+import axios from 'axios';
 
 const drawerWidth = 150;
 
@@ -51,6 +54,47 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+  },
+  searchBase: {
+    position: 'relative',
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
+        '&:hover': {
+          backgroundColor: alpha(theme.palette.common.white, 0.25),
+        },
+        marginRight: theme.spacing(2),
+        marginLeft: 0,
+        width: '100%',
+        [theme.breakpoints.up('sm')]: {
+          marginLeft: theme.spacing(3),
+          width: 'auto',
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: '100%',
+    position: 'absolute',
+    pointerEvents: 'none',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  searchRoot: {
+    color: 'inherit',
+  },
+  searchInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch',
+    },
+  },
+  dataFeed_UL: {
+    paddingLeft: 0,
+    listStyle: 'none',
   },
   appBarShift: {
     width: `calc(100% - ${drawerWidth}px)`,
@@ -137,7 +181,13 @@ function MainWin(props) {
   const [openDrawer, setOpenDrawer] = React.useState(false);
 
   // we need the state 'auth' to depend on the backend 
-  const [auth, setAuth] = React.useState(props.authVal);
+  let [auth, setAuth] = React.useState(props.authVal);
+
+  // searchbox input
+  let [userText, setUserText] = React.useState();
+
+  // Queried user data state
+  let [userData, setUserData] = React.useState({posts: [], isFetching: false});
 
 
   const [toggleSignInPop, setToggleSignInPop] = React.useState(false);
@@ -150,6 +200,7 @@ function MainWin(props) {
 
   const isProfileMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
 
   const handleDrawerOpen = () => {
     setOpenDrawer(true);
@@ -252,6 +303,27 @@ function MainWin(props) {
     console.log("handleMyAccountBtn pressed");
     handleProfileMenuClose();
   };
+
+  const onSearchChange = async (event) => {
+    userText = await event.target.value;
+  };
+
+  const onSearchSubmit = async (event) => {
+    console.log(`userText: ${userText}`);
+    event.preventDefault();
+    let tmp = [];
+    setUserData({posts:[], isFetching: true});
+    await axios.get('http://localhost:9000/showQuery',{
+      params: {
+        searchText: userText
+      }
+    }).then(res => {
+      tmp = res.data;
+      console.log(res);
+    })
+    .catch((err) => console.log(err));
+    setUserData({posts: tmp, isFetching: false});
+  }
 
   const profileMenuList = [
     { content: "Sign In", onClick: handleSignInOpen },
@@ -368,7 +440,26 @@ function MainWin(props) {
           </Typography>
 
           <div className={clsx(!auth && classes.searchHidden)}>
-            <SearchBar />
+
+            <div className={classes.searchBase}>
+              <div className={classes.searchIcon}>
+                <SearchIcon />
+              </div>
+              <form onSubmit={onSearchSubmit}>
+                <InputBase
+                  placeholder="Search…"
+                  onChange={onSearchChange}
+                  name="userQuery"
+                  value={userText}
+                  classes={{
+                    root: classes.searchRoot,
+                    input: classes.searchInput,
+                  }}
+                  inputProps={{ 'aria-label': 'search' }}
+                />
+              </form>
+            </div>
+
           </div>
 
           <div className={classes.grow} />
@@ -466,7 +557,16 @@ function MainWin(props) {
         </div>
         
         <div className={clsx(!auth && classes.importList)}>
-          <ListPosts />
+          {userData.posts.map((val)=>{
+            console.log(val.title);
+            return(
+              <ul className={classes.dataFeed_UL}>
+                <li>
+                  <Post title={val.title} description={val.description} m_text={val.meme_text} />
+                </li>
+              </ul>
+            );
+          })}
         </div>
 
         <Copyright />
@@ -476,4 +576,3 @@ function MainWin(props) {
 }
 
 export default MainWin;
- 

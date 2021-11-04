@@ -1,21 +1,24 @@
 import Post from "./PostWin";
-import SearchBar from "../MenuComps/SearchBar";
+import {useEffect, useState} from "react"
+import { CameraFront } from "@material-ui/icons";
 
-function ListPosts(props){
-    const posts = SearchBar.globalData;
-    const postItems = posts.map((post, index)=>{
-        // console.log(`post: ${post}, index: ${index}`)
-        return (<li key={index}>
-            <Post data={post} />
-        </li>
-        );
-    });
-    return (
-        <ul>
-            {/* {console.log(postItems)} */}
-            {postItems}
-        </ul>
-    );
-}
+// function UserPost(props){ 
+//     console.log("userPost called");
+//     const [data, setData] = useState({post: props.userPosts});
+//     let myPost = data.post.map((p)=>{
+//         return (
+//           <li>
+//             < Post title={p.title} data={p} />
+//           </li>
+//         );
+//       });
+//     return (
+//         <div>
+//             <ul>
+//                 {myPost}
+//             </ul>
+//         </div>
+//     );
+// }
 
-export default ListPosts;
+// export default UserPost;

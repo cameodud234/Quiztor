@@ -1,8 +1,7 @@
 import React, {useState, useEffect } from 'react';
 import { alpha, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
-import InputBase from '@material-ui/core/InputBase';
-import SearchIcon from '@material-ui/icons/Search';
+
 import Post from '../centerComps/PostWin';
 import axios from 'axios';
 
@@ -52,64 +51,64 @@ const useStyles = makeStyles( (theme) => ({
 
 );
 
-let globalData = [];
+// let globalData = [];
 
-export function ListPosts(data){
-  const posts = globalData;
-  console.log(`posts: ${posts}`);
-  const postItems = posts.map((post, index)=>{
-      console.log(`post: ${post}, index: ${index}`)
-      return (<li key={index}>
-          <Post data={post} />
-      </li>
-      );
-  });
-  return (
-      <ul>
-          {postItems}
-      </ul>
-  );
-}
+// export function ListPosts(data){
+//   const posts = globalData;
+//   console.log(`posts: ${posts}`);
+//   const postItems = posts.map((post, index)=>{
+//       console.log(`post: ${post}, index: ${index}`)
+//       return (<li key={index}>
+//           <Post data={post} />
+//       </li>
+//       );
+//   });
+//   return (
+//       <ul>
+//           {postItems}
+//       </ul>
+//   );
+// }
 
-export function SearchBar(props){
-  const classes = useStyles();
-  let [userText, setUserText] = useState();
-  const onChange = async (event) => {
-    userText = await event.target.value;
-  };
-  const onSubmit = async (event) => {
-    console.log(`userText: ${userText}`);
-    event.preventDefault();
-    await axios.get('http://localhost:9000/showQuery',{
-      params: {
-        searchText: userText
-      }
-    })
-    .then((res) => { 
-      let tmp = res.data;
-      globalData = res.data;
-      console.log(globalData);
-    })
-    .catch((err) => console.log(err));
-  }
-  return(
-    <div className={classes.root}>
-      <div className={classes.searchIcon}>
-        <SearchIcon />
-      </div>
-      <form onSubmit={onSubmit}>
-        <InputBase
-          placeholder="Search…"
-          onChange={onChange}
-          name="userQuery"
-          value={userText}
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          inputProps={{ 'aria-label': 'search' }}
-        />
-      </form>
-    </div>
-  );
-}
+// export function SearchBar(props){
+//   const classes = useStyles();
+//   let [userText, setUserText] = useState();
+//   const onChange = async (event) => {
+//     userText = await event.target.value;
+//   };
+//   const onSubmit = async (event) => {
+//     console.log(`userText: ${userText}`);
+//     event.preventDefault();
+//     await axios.get('http://localhost:9000/showQuery',{
+//       params: {
+//         searchText: userText
+//       }
+//     })
+//     .then((res) => { 
+//       let tmp = res.data;
+//       globalData = res.data;
+//       console.log(globalData);
+//     })
+//     .catch((err) => console.log(err));
+//   }
+//   return(
+//     <div className={classes.root}>
+//       <div className={classes.searchIcon}>
+//         <SearchIcon />
+//       </div>
+//       <form onSubmit={onSubmit}>
+//         <InputBase
+//           placeholder="Search…"
+//           onChange={onChange}
+//           name="userQuery"
+//           value={userText}
+//           classes={{
+//             root: classes.inputRoot,
+//             input: classes.inputInput,
+//           }}
+//           inputProps={{ 'aria-label': 'search' }}
+//         />
+//       </form>
+//     </div>
+//   );
+// }
