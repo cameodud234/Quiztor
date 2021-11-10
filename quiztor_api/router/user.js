@@ -12,7 +12,7 @@ router.get("/users", AuthenticateAdmin, (req, res) => {
 router.post("/users", AuthenticateAdmin, (req, res) => {
     const body = req.body;
 
-    if(body.username && body.username != "") {
+    if(body.username && body.password != "") {
         const user = new UserModel(body)
         user.save((error) => {
             if(error) {

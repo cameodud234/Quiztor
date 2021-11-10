@@ -12,7 +12,7 @@ router.get("/posts", AuthenticateToken, (req, res) => {
 router.post("/posts", (req, res) => {
     const body = req.body;
 
-    if(body.name && body.name != "") {
+    if(body.title && body.description != "") {
         const post = new PostModel(body)
         post.save((error) => {
             if(error) {
@@ -22,7 +22,7 @@ router.post("/posts", (req, res) => {
         })
     } else {
         res.send({
-            status : "ERROR", message : "Name not specified"
+            status : "ERROR", message : "Title or description not specified"
         })
     }
 })

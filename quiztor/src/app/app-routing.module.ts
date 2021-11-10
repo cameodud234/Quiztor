@@ -1,6 +1,7 @@
 import { registerLocaleData } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AddPostComponent } from './add-post/add-post.component';
 import { AddUserComponent } from './add-user/add-user.component';
 import { AdminAuthGuardService } from './admin-auth-guard.service';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -27,6 +28,9 @@ const routes: Routes = [
   },
   {
     path: "userList", component: UserListComponent, canActivate: [LoginAuthGuardService, AdminAuthGuardService]
+  },
+  {
+    path: "addPost", component: AddPostComponent, canActivate: [LoginAuthGuardService]
   }
 ];
 
