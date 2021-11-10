@@ -1,3 +1,0 @@
-# Quiztor
-
-Social Media Website

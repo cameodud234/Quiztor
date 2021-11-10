@@ -1,0 +1,16 @@
+<app-navbar></app-navbar>
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor ="let user of users">
+            <td>{{user._id}}</td>
+            <td>{{user.username}}</td>
+        </tr>
+    </tbody>
+</table>
