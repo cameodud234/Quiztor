@@ -26,8 +26,8 @@ export class ServiceService {
     })
   }
 
-  getProducts() {
-    return this.http.get("http://localhost:3000/dashboard", {
+  getPosts() {
+    return this.http.get("http://localhost:3000/posts", {
       headers : {
         "authorization" : window.sessionStorage.getItem('token') || ""
       }

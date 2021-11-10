@@ -9,17 +9,17 @@ import { ServiceService } from '../service.service';
 })
 export class DashboardComponent implements OnInit {
 
-  products;
+  posts;
 
   constructor(private http : HttpClient, private service : ServiceService) { }
 
   ngOnInit(): void {
-    this.getProducts();
+    this.getPosts();
   }
 
-  getProducts() {
-    this.service.getProducts().subscribe(response => {
-      this.products = response
+  getPosts() {
+    this.service.getPosts().subscribe(response => {
+      this.posts = response
     })
   }
 

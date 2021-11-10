@@ -15,4 +15,8 @@ export class NavbarComponent implements OnInit {
     this.admin = window.sessionStorage.getItem("admin");
   }
 
+  logout() {
+    sessionStorage.clear();
+  }
+
 }
