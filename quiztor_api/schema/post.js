@@ -6,7 +6,7 @@ const postSchema = new Schema({
     meme_text : String,
     description : String,
     title : String
-})
+});
 
 const PostModel = mongoose.model("post", postSchema, "posts");
 

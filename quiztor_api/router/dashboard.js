@@ -7,7 +7,7 @@ router.get("/posts", AuthenticateToken, (req, res) => {
     PostModel.find((error, data) => {
         res.json(data);
     })
-})
+});
 
 router.post("/posts", (req, res) => {
     const body = req.body;
@@ -25,6 +25,6 @@ router.post("/posts", (req, res) => {
             status : "ERROR", message : "Title or description not specified"
         })
     }
-})
+});
 
 module.exports = router;
