@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const PostModel = require("../schema/post");
 const AuthenticateToken = require("../utils/authentication");
+const fs = require("fs")
+const path = require("path")
+
 let multer = require('multer'),
     mongoose = require('mongoose');
 
@@ -41,15 +44,30 @@ router.get("/posts", AuthenticateToken, (req, res) => {
 router.post("/posts", upload.single('memes'), (req, res, next) => {
     const body = req.body;
     const url = req.protocol + '://' + req.get('host')
-    
+
+    id = new mongoose.Types.ObjectId();
+
     const post = new PostModel({
-        _id: new mongoose.Types.ObjectId(),
+        _id: id,
         classifier: body['classifier'],
         meme_text: body['meme_text'],
         description: body['description'],
         title: body['title'],
-        meme: url + '/public/' + req.file.filename
+        meme: url + '/public/' + id + '-' + req.file.filename
     });
+
+
+    const pathToFile = 'public/' + req.file.filename
+    const newPathToFile = 'public/' + id + '-' + req.file.filename
+
+    fs.renameSync(pathToFile, newPathToFile, function (err) {
+        if (err) {
+            throw err
+        } else {
+            console.log("Successfully renamed the file!")
+        }
+    })
+
     post.save().then(result => {
         console.log(result);
         res.status(201).json({
@@ -69,8 +87,8 @@ router.post("/posts", upload.single('memes'), (req, res, next) => {
                 error: err
             });
     })
-    // const post = new PostModel(body)
-    //post.save((error) => {
+
+
 
 });
 
