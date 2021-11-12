@@ -41,7 +41,7 @@ router.get("/posts", AuthenticateToken, (req, res) => {
     })
 });
 
-router.post("/posts", upload.single('memes'), (req, res, next) => {
+router.post("/posts", upload.single('meme'), (req, res, next) => {
     const body = req.body;
     const url = req.protocol + '://' + req.get('host')
 
