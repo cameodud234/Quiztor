@@ -41,6 +41,7 @@ export class ServiceService {
       description : formValues.description,
       title : formValues.title
     }
+
     this.router.navigate(["/dashboard"])
     return this.http.post("http://localhost:3000/posts", this.body, {
       headers : {

@@ -10,7 +10,6 @@ import { ServiceService } from '../service.service';
 })
 export class AddPostComponent implements OnInit {
   post;
-  fileToUpload: File | null = null;
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) { }
 
@@ -19,10 +18,6 @@ export class AddPostComponent implements OnInit {
       title: new FormControl(''),
       description: new FormControl('')
     })
-  }
-
-  handleFileInput(files: FileList) {
-    this.fileToUpload = files.item(0);
   }
 
   addPost() {
