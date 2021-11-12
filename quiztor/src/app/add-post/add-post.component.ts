@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { ServiceService } from '../service.service';
@@ -9,14 +10,19 @@ import { ServiceService } from '../service.service';
 })
 export class AddPostComponent implements OnInit {
   post;
+  fileToUpload: File | null = null;
 
-  constructor(private formBuilder : FormBuilder, private service : ServiceService) { }
+  constructor(private formBuilder: FormBuilder, private service: ServiceService) { }
 
   ngOnInit(): void {
     this.post = this.formBuilder.group({
-      title : new FormControl(''),
-      description : new FormControl('')
+      title: new FormControl(''),
+      description: new FormControl('')
     })
+  }
+
+  handleFileInput(files: FileList) {
+    this.fileToUpload = files.item(0);
   }
 
   addPost() {
