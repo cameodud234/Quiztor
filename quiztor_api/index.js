@@ -17,7 +17,6 @@ app.use(UserRoutes);
 app.use(Authentication);
 
 app.use(express.static(__dirname+'/public'));
-console.log(__dirname)
 
 app.listen(3000, ()=> {
     console.log("Server running at port 3000")
