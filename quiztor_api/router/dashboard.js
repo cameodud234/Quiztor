@@ -41,8 +41,14 @@ router.get("/posts", AuthenticateToken, (req, res) => {
     })
 });
 
+// router.get("/public/:image", (req, res) => {
+//     const image = req.params.image;
+
+    
+// })
+
 router.post("/posts", upload.single('meme'), (req, res, next) => {
-    const body = req.body;
+    const body = req.query;
     const url = req.protocol + '://' + req.get('host')
 
     id = new mongoose.Types.ObjectId();
@@ -53,9 +59,8 @@ router.post("/posts", upload.single('meme'), (req, res, next) => {
         meme_text: body['meme_text'],
         description: body['description'],
         title: body['title'],
-        meme: url + '/public/' + id + '-' + req.file.filename
+        meme: url + '/' + id + '-' + req.file.filename
     });
-
 
     const pathToFile = 'public/' + req.file.filename
     const newPathToFile = 'public/' + id + '-' + req.file.filename
@@ -91,5 +96,7 @@ router.post("/posts", upload.single('meme'), (req, res, next) => {
 
 
 });
+
+
 
 module.exports = router;

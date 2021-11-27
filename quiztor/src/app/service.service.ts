@@ -34,20 +34,22 @@ export class ServiceService {
     })
   }
 
-  addPost(formValues) {
+  addPost(formValues, fd) {
     this.body = {
       classifier : "placeholder",
       meme_text : "placeholder",
       description : formValues.description,
-      title : formValues.title
+      title : formValues.title,
     }
 
-    this.router.navigate(["/dashboard"])
-    return this.http.post("http://localhost:3000/posts", this.body, {
+    return this.http.post("http://localhost:3000/posts/", fd, {
       headers : {
         "authorization" : window.sessionStorage.getItem('token') || ""
-      }
-    }).subscribe();
+      },
+      params : this.body
+    }).subscribe(res => {
+      this.router.navigate(["/dashboard"])
+    });
   }
 
   registerUser(formValues) {
