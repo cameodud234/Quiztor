@@ -31,7 +31,7 @@ const routes: Routes = [
   },
   {
     path: "addPost", component: AddPostComponent, canActivate: [LoginAuthGuardService]
-  }
+  },
 ];
 
 @NgModule({
