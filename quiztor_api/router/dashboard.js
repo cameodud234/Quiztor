@@ -5,7 +5,7 @@ const AuthenticateToken = require("../utils/authentication");
 const fs = require("fs")
 const path = require("path")
 
-const {PythonShell} =require('python-shell');
+const { PythonShell } = require('python-shell');
 
 let multer = require('multer'),
     mongoose = require('mongoose');
@@ -41,18 +41,11 @@ router.get("/posts", AuthenticateToken, (req, res) => {
     PostModel.find((error, data) => {
         res.json(data);
     })
-
-
-
 });
 
-// router.get("/public/:image", (req, res) => {
-//     const image = req.params.image;
-
-    
-// })
-image_text = 'hello'
 router.post("/posts", upload.single('meme'), (req, res, next) => {
+    image_text = ''
+    image_label = ''
     const body = req.query;
     const url = req.protocol + '://' + req.get('host')
 
@@ -73,44 +66,51 @@ router.post("/posts", upload.single('meme'), (req, res, next) => {
         mode: 'text',
         pythonOptions: ['-u'], // get print results in real-time
         scriptPath: 'python',
-        args : [newPathToFile]
+        args: [newPathToFile]
     };
 
-    PythonShell.run('text_extract.py', options, function (err, result){
+    PythonShell.run('text_extract.py', options, function (err, result) {
         if (err) throw err;
         // result is an array consisting of messages collected
         //during execution of script.
         image_text = result[0]
-        //console.log(result[0]);
 
-        const post = new PostModel({
-            _id: id,
-            label: body['label'],
-            meme_text: image_text,
-            description: body['description'],
-            title: body['title'],
-            meme: url + '/' + id + '-' + req.file.filename
-        });
+        PythonShell.run('main.py', options, function (err, result) {
+            if (err) throw err;
+            // result is an array consisting of messages collected
+            //during execution of script.
+            //console.log(options)
+            image_label = result[0]
+
+            const post = new PostModel({
+                _id: id,
+                label: image_label,
+                meme_text: image_text,
+                description: body['description'],
+                title: body['title'],
+                meme: url + '/' + id + '-' + req.file.filename
+            });
     
-        post.save().then(result => {
-            console.log(result);
-            res.status(201).json({
-                message: "Done upload!",
-                postCreated: {
-                    _id: result._id,
-                    label: body['label'],
-                    meme_text: body['meme_text'],
-                    description: body['description'],
-                    title: body['title'],
-                    meme: result.meme
-                }
+            post.save().then(result => {
+                console.log(result);
+                res.status(201).json({
+                    message: "Done upload!",
+                    postCreated: {
+                        _id: result._id,
+                        label: body['label'],
+                        meme_text: body['meme_text'],
+                        description: body['description'],
+                        title: body['title'],
+                        meme: result.meme
+                    }
+                })
+            }).catch(err => {
+                console.log(err),
+                    res.status(500).json({
+                        error: err
+                    });
             })
-        }).catch(err => {
-            console.log(err),
-                res.status(500).json({
-                    error: err
-                });
-        })
+        });
     });
 });
 
