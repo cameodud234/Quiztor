@@ -36,7 +36,7 @@ export class ServiceService {
 
   addPost(formValues, fd) {
     this.body = {
-      classifier : "placeholder",
+      label : "placeholder",
       meme_text : "placeholder",
       description : formValues.description,
       title : formValues.title,

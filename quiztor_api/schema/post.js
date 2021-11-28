@@ -5,7 +5,7 @@ const postSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     // userid : String,
     // username : String,
-    classifier : String,
+    label : String,
     meme_text : String,
     description : String,
     title : String,
