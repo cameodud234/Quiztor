@@ -19,7 +19,7 @@ export class DashboardComponent implements OnInit {
 
   getPosts() {
     this.service.getPosts().subscribe(response => {
-      this.posts = response
+      this.posts = response;
     })
   }
 

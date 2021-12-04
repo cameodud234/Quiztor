@@ -34,6 +34,18 @@ export class ServiceService {
     })
   }
 
+  getPostsSearch(value) {
+    this.body = {
+      searchText : value
+    }
+    console.log(this.body.searchText);
+    return this.http.get("http://localhost:3000/showQuery", {
+      headers : { "authorization" : window.sessionStorage.getItem('token') || ""},
+      params: this.body,
+      responseType: "json"
+    });
+  }
+
   addPost(formValues, fd) {
     this.body = {
       label : "placeholder",

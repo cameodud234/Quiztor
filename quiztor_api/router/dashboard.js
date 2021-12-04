@@ -43,6 +43,13 @@ router.get("/posts", AuthenticateToken, (req, res) => {
     })
 });
 
+router.get("/showQuery", AuthenticateToken, async (req, res, next) => {
+    const userData = req.query;
+    await PostModel.find({label : {$regex: new RegExp(userData.searchText)}},(err, data) => {
+        res.json(data);
+    });
+});
+
 router.post("/posts", upload.single('meme'), (req, res, next) => {
     image_text = ''
     image_label = ''
