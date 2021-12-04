@@ -8,6 +8,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginAuthGuardService } from './login-auth-guard.service';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
+import { SearchComponent } from './search/search.component';
 import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
@@ -19,6 +21,9 @@ const routes: Routes = [
   },
   {
     path: "addUser", component: AddUserComponent, canActivate: [LoginAuthGuardService, AdminAuthGuardService]
+  },
+  {
+    path: "search", component: SearchComponent, canActivate: [LoginAuthGuardService]
   },
   {
     path: "dashboard", component: DashboardComponent, canActivate: [LoginAuthGuardService]

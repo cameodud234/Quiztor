@@ -13,6 +13,8 @@ import { UserListComponent } from './user-list/user-list.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AddPostComponent } from './add-post/add-post.component';
 import { DragDropFileUploadDirective } from './drag-drop-file-upload.directive';
+import { SearchComponent } from './search/search.component';
+import { SearchbarComponent } from './searchbar/searchbar.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { DragDropFileUploadDirective } from './drag-drop-file-upload.directive';
     UserListComponent,
     NavbarComponent,
     AddPostComponent,
-    DragDropFileUploadDirective
+    DragDropFileUploadDirective,
+    SearchComponent,
+    SearchbarComponent
   ],
   imports: [
     BrowserModule,
