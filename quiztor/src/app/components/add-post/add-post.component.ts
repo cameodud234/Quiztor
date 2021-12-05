@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { ServiceService } from '../service.service';
+import { ServiceService } from '../../service.service';
 
 @Component({
   selector: 'app-add-post',
