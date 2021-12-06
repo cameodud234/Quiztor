@@ -42,8 +42,8 @@ module.exports.login = (req, res) => {
 };
 
 module.exports.posts = (req, res, next) => {
-    const image_text = '';
-    const image_label = '';
+    let image_text = '';
+    let image_label = '';
     const body = req.query;
     const url = req.protocol + '://' + req.get('host');
 
