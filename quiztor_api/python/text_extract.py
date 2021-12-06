@@ -86,7 +86,7 @@ def write_text(formatted_text):
 
 if __name__ == "__main__":
     # this is for your windows device : 
-    # pytesseract.pytesseract.tesseract_cmd=r'Tesseract-OCR/tesseract.exe'
+    pytesseract.pytesseract.tesseract_cmd=r'Tesseract-OCR/tesseract.exe'
 
     # this is for my mac device: 
     # pytesseract.pytesseract.tesseract_cmd=r'/usr/local/Cellar/tesseract/4.1.3/bin/tesseract'
