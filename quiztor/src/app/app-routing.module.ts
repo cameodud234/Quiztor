@@ -1,16 +1,16 @@
 import { registerLocaleData } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AddPostComponent } from './add-post/add-post.component';
-import { AddUserComponent } from './add-user/add-user.component';
+import { AddPostComponent } from './components/add-post/add-post.component';
+import { AddUserComponent } from './components/add-user/add-user.component';
 import { AdminAuthGuardService } from './admin-auth-guard.service';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginAuthGuardService } from './login-auth-guard.service';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-import { SearchbarComponent } from './searchbar/searchbar.component';
-import { SearchComponent } from './search/search.component';
-import { UserListComponent } from './user-list/user-list.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+import { SearchbarComponent } from './components/searchbar/searchbar.component';
+import { SearchComponent } from './components/search/search.component';
+import { UserListComponent } from './components/user-list/user-list.component';
 
 const routes: Routes = [
   {
