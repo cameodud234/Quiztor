@@ -98,4 +98,26 @@ export class ServiceService {
       }
     }).subscribe()
   }
+
+  getPost(id) {
+    return this.http.get(`http://localhost:3000/post/${id}`);
+  }
+
+  addComment(formValues, id) {
+    this.body = {
+      comment : formValues.comment
+    }
+    return this.http.post(`http://localhost:3000/comment/${id}`, this.body, {
+      headers : {
+        "authorization" : window.sessionStorage.getItem('token') || ""
+      }
+    }).subscribe(res => {
+      this.router.navigate([`/post/${id}`])
+    });
+  }
+  
+  getComments(id) {
+    return this.http.get(`http://localhost:3000/comments/${id}`)
+  }
+
 }

@@ -1,0 +1,18 @@
+<app-navbar></app-navbar>
+
+<div class="d-flex justify-content-center">
+    <div class="card m-3">
+        <h5 class="card-header"> Add Comment </h5>
+        <div class="card-body">
+            <form [formGroup]="comment" (ngSubmit)="addComment()">
+                <div class="form-group">
+                    <label>Comment: </label>
+                    <input formControlName="comment" type="text" class="form-control" required>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
