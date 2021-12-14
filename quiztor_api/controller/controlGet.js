@@ -35,13 +35,13 @@ module.exports.showQuery = async (req, res, next) => {
             keywordList[i] = lettersOnly(keywordList[i]);
         }
 
-        regex = keywordList.join("|");
+        let regex = keywordList.join("|");
         console.log(regex)
 
-        PostModel.find({label : {$regex: regex, $options:"i"}},(err, data) => {
-            console.log(data);
-            res.json(data);
-        });
+        PostModel.find({'$or':[{label:new RegExp(regex,'i')},{meme_text:new RegExp(regex,'i')}]}).exec(function(err, collection) {
+            console.log(collection);
+            res.json(collection);
+        })
 
     });
 }

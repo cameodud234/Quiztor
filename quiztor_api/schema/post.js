@@ -13,6 +13,6 @@ const postSchema = new Schema({
 });
 
 const PostModel = mongoose.model("post", postSchema, "posts");
-PostModel.createIndexes({label:"text", meme_text:"text"});
+// PostModel.createIndexes({label:"text", meme_text:"text"});
 
 module.exports = PostModel;
