@@ -44,7 +44,4 @@ module.exports.showQuery = async (req, res, next) => {
         });
 
     });
-    // await PostModel.find({label : {$regex: new RegExp(userData.searchText)}},(err, data) => {
-    //     res.json(data);
-    // });
 }
