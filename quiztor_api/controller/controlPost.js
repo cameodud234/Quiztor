@@ -1,13 +1,49 @@
 const PostModel = require('../schema/post');
-const UserModel = require('../schema/user')
+const UserModel = require('../schema/user');
+const CommentModel = require("../schema/comment");
 const { PythonShell } = require('python-shell');
 const mongoose = require('mongoose');
 const fs = require("fs");
 const { JWT_SECRET_KEY } = require("../config");
 const jwt = require("jsonwebtoken");
-const path = require("path");
+// const path = require("path");
 
 
+module.exports.users = (req, res) => {
+    const body = req.body;
+
+    if(body.username && body.password != "") {
+        const user = new UserModel(body);
+        user.save((error) => {
+            if(error) {
+                res.send({ status : "ERROR", message : "Unable to store user"})
+            }
+            res.send({ status : "SUCCESS", mesage : "User successfully added"})
+        });
+    } else {
+        res.send({ 
+            status : "ERROR", message : "Username not specified"
+        });
+    }
+}
+
+module.exports.nonadmin_users = (req, res) => {
+    const body = req.body;
+
+    if(body.username && body.username != "") {
+        const user = new UserModel(body)
+        user.save((error) => {
+            if(error) {
+                res.send({ status : "ERROR", message : "Unable to store user"})
+            }
+            res.send({ status : "SUCCESS", mesage : "User successfully added"})
+        });
+    } else {
+        res.send({ 
+            status : "ERROR", message : "Username not specified"
+        });
+    }
+}
 
 module.exports.login = (req, res) => {
     const body = req.body;
@@ -111,3 +147,51 @@ module.exports.posts = (req, res, next) => {
         });
     });
 };
+
+module.exports.comment_postid = (req, res) => {
+    id = new mongoose.Types.ObjectId();
+    token = req.headers['authorization']
+    username = null;
+    user_id = null;
+    comment = null;
+
+    if(token && token !== ""){
+        jwt.verify(token, JWT_SECRET_KEY, (err, decoded)=> {
+            if(err) {
+                return res.json({ status : "ERROR", message : "Invalid User" })
+            }
+
+            username = decoded.name
+            user_id = decoded.id
+            post_id = req.params.postid
+            user_comment = req.body.comment
+
+            const comment = new CommentModel({
+                _id : id,
+                user_id : user_id,
+                username : username,
+                post_id : post_id,
+                comment : user_comment
+            })
+
+            comment.save().then(result => {
+                console.log(result);
+                res.status(201).json({
+                    message: "Done upload!",
+                    commentCreated: {
+                        _id : result.id,
+                        user_id : result.user_id,
+                        username : result.username,
+                        post_id : result.post_id,
+                        comment : result.comment
+                    }
+                })
+            }).catch(err => {
+                console.log(err),
+                res.status(500).json({
+                    error : err
+                })
+            })
+        })
+    }
+}
