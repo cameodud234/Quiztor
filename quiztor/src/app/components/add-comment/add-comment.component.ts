@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { ServiceService } from '../service.service';
+import { ServiceService } from '../../service.service';
 
 @Component({
   selector: 'app-add-comment',

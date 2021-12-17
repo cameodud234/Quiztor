@@ -11,8 +11,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { SearchComponent } from './components/search/search.component';
 import { UserListComponent } from './components/user-list/user-list.component';
-import { PostComponent } from './post/post.component';
-import { AddCommentComponent } from './add-comment/add-comment.component';
+import { PostComponent } from './components/post/post.component';
+import { AddCommentComponent } from './components/add-comment/add-comment.component';
 
 const routes: Routes = [
   {
