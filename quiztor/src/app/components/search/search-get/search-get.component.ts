@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl } from '@angular/forms';
-import { emit } from 'process';
 import { ServiceService } from 'src/app/service.service';
 
 @Component({
@@ -12,6 +11,7 @@ export class SearchGetComponent implements OnInit {
 
   post;
   @Output() postBroadcast = new EventEmitter();
+  @Output() isButtonPressed = new EventEmitter();
   selectedFile = null;
 
   constructor(private formBuilder: FormBuilder, private service: ServiceService) { }
@@ -19,7 +19,7 @@ export class SearchGetComponent implements OnInit {
   ngOnInit(): void {
     this.post = this.formBuilder.group({
       text: new FormControl(''),
-      meme : new FormControl(null)
+      // meme : new FormControl(null)
     })
   }
 
@@ -31,10 +31,11 @@ export class SearchGetComponent implements OnInit {
   showPosts() {
     const fd = new FormData();
     fd.append("meme", this.selectedFile);
-    this.service.getPostsSearch(this.post.value, fd).subscribe((res) => {
-      this.post = res;
-      this.postBroadcast.emit(res);
-    });
+    this.service.getPostsSearch(this.post.value, fd)
+      .subscribe((res) => {
+        console.log(res)
+        this.postBroadcast.emit(res);
+      })
   }
 
 }
