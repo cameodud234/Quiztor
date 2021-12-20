@@ -16,6 +16,8 @@ import { DragDropFileUploadDirective } from './drag-drop-file-upload.directive';
 import { SearchComponent } from './components/search/search.component';
 import { PostComponent } from './components/post/post.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { SearchGetComponent } from './components/search/search-get/search-get.component';
+import { SearchPostComponent } from './components/search/search-post/search-post.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     DragDropFileUploadDirective,
     SearchComponent,
     PostComponent,
-    AddCommentComponent
+    AddCommentComponent,
+    SearchGetComponent,
+    SearchPostComponent
   ],
   imports: [
     BrowserModule,

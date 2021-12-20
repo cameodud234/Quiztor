@@ -16,7 +16,7 @@ module.exports.posts = (req, res) => {
 module.exports.showQuery = async (req, res, next) => {
 
     const userData = req.query;
-    console.log(userData);
+    console.log(userData)
 
     const {PythonShell} = require('python-shell');
 

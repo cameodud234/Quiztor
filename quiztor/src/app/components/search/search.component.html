@@ -1,1 +1,5 @@
 <app-navbar></app-navbar>
+
+<div *ngIf="!isSearchPressed; else showPosts"><app-search-get></app-search-get></div>
+<ng-template #showPosts></ng-template>
+<app-search-post></app-search-post>

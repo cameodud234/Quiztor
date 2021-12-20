@@ -11,11 +11,16 @@ import { ServiceService } from '../../service.service';
 
 export class SearchComponent implements OnInit {
 
-  @Input() posts;
+  posts;
+  @Input() isSearchPressed: Boolean;
 
   constructor(private http : HttpClient, private service : ServiceService) { }
 
   ngOnInit(): void {
+  }
+
+  emitPosts(myPosts){
+    this.posts = myPosts;
   }
 
 }

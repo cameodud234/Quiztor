@@ -27,6 +27,9 @@ const routes: Routes = [
     path: "search", component: SearchComponent, canActivate: [LoginAuthGuardService]
   },
   {
+    path: "search-post", component: SearchComponent, canActivate: [LoginAuthGuardService]
+  },
+  {
     path: "dashboard", component: DashboardComponent, canActivate: [LoginAuthGuardService]
   },
   {
