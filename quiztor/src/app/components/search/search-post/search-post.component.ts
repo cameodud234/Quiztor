@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-search-post',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-post.component.css']
 })
 export class SearchPostComponent implements OnInit {
+
+  @Input() myPosts;
 
   constructor() { }
 

@@ -1,4 +1,23 @@
 <app-navbar></app-navbar>
 
-<div *ngIf="!isSearchPressed; else showPosts"><app-search-get></app-search-get></div>
-<ng-template #showPosts></ng-template>
+<div class="d-flex justify-content-center" *ngIf="!isSearchPressed; else postSomething">
+    <div class="card m-3">
+        <h5 class="card-header"> Search </h5>
+        <div class="card-body">
+            <form [formGroup]="searchVal" (ngSubmit)="showPosts()">
+                <div class="form-group">
+                    <label>text: </label>
+                    <input formControlName="text" type="text" class="form-control" required>
+                </div>
+                <div class="text-center">
+                    <button class="btn btn-primary">search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<ng-template #postSomething>
+    <button class="btn btn-primary" (click)="onClick()">Search again</button>
+    <app-search-post [myPosts] = posts></app-search-post>
+</ng-template>

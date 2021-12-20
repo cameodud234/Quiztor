@@ -1,6 +1,6 @@
-
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
+import { FormBuilder, FormControl } from '@angular/forms';
 import { ServiceService } from '../../service.service';
 
 @Component({
@@ -11,16 +11,40 @@ import { ServiceService } from '../../service.service';
 
 export class SearchComponent implements OnInit {
 
-  posts;
-  @Input() isSearchPressed: Boolean;
+  searchVal;
+  isSearchPressed: boolean = false;
+  // isLoaded: boolean = false;
+  selectedFile = null;
 
-  constructor(private http : HttpClient, private service : ServiceService) { }
+  constructor(private http : HttpClient, private formBuilder: FormBuilder, private service : ServiceService) { }
 
   ngOnInit(): void {
+    this.searchVal = this.formBuilder.group({
+      text: new FormControl(''),
+      // meme : new FormControl(null)
+    })
   }
 
-  emitPosts(myPosts){
-    this.posts = myPosts;
+  onFileChange(event) {
+    console.log(event.target.files);
+    this.selectedFile = event.target.files[0];
+  }
+
+  onClick() {
+    this.isSearchPressed = false;
+  }
+
+  showPosts() {
+    if(this.searchVal.value.text == "") throw new Error("Can not search empty string.");
+    this.isSearchPressed = true;
+    // const fd = null;
+    // const fd = new FormData();
+    // fd.append("meme", this.selectedFile);
+    this.service.getPostsSearch(this.searchVal.value, null)
+      .subscribe((res) => {
+        console.log(res)
+      }
+    )
   }
 
 }
