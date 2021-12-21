@@ -8,7 +8,6 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginAuthGuardService } from './login-auth-guard.service';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { SearchComponent } from './components/search/search.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { PostComponent } from './components/post/post.component';
@@ -26,6 +25,9 @@ const routes: Routes = [
   },
   {
     path: "search", component: SearchComponent, canActivate: [LoginAuthGuardService]
+  },
+  {
+    path: "search-post", component: SearchComponent, canActivate: [LoginAuthGuardService]
   },
   {
     path: "dashboard", component: DashboardComponent, canActivate: [LoginAuthGuardService]

@@ -14,7 +14,9 @@ module.exports.posts = (req, res) => {
 }
 
 module.exports.showQuery = async (req, res, next) => {
+
     const userData = req.query;
+    console.log(userData)
 
     const {PythonShell} = require('python-shell');
 
@@ -43,9 +45,15 @@ module.exports.showQuery = async (req, res, next) => {
         }
 
         let regex = keywordList.join("|");
-        console.log(regex)
+        console.log(regex);
 
-        PostModel.find({'$or':[{label:new RegExp(regex,'i')},{meme_text:new RegExp(regex,'i')}]}).exec(function(err, collection) {
+        PostModel.find({'$or':[
+
+            { label : new RegExp(regex,'i') }, 
+
+            { meme_text : new RegExp(regex,'i') 
+
+        }]}).exec(function(err, collection) {
             console.log(collection);
             res.json(collection);
         })

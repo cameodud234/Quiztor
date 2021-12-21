@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { ValueTransformer } from '@angular/compiler/src/util';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ export class ServiceService {
         window.sessionStorage.setItem("token", response.token)
         window.sessionStorage.setItem("admin", response.admin)
         this.router.navigate(["/dashboard"])
-      }  
+      }
     })
   }
 
@@ -34,16 +35,17 @@ export class ServiceService {
     })
   }
 
-  getPostsSearch(value) {
+  getPostsSearch(value, fd) {
     this.body = {
-      searchText : value
+      searchText : value.text,
+      file : fd
     }
-    console.log(this.body.searchText);
+    console.log(value);
     return this.http.get("http://localhost:3000/showQuery", {
       headers : { "authorization" : window.sessionStorage.getItem('token') || ""},
       params: this.body,
       responseType: "json"
-    });
+    })
   }
 
   addPost(formValues, fd) {
@@ -89,7 +91,6 @@ export class ServiceService {
       password : formValues.password,
       admin : formValues.type
     }
-
 
     this.router.navigate(["/userList"])
     return this.http.post("http://localhost:3000/users", this.body, {

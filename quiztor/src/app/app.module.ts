@@ -14,9 +14,10 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { AddPostComponent } from './components/add-post/add-post.component';
 import { DragDropFileUploadDirective } from './drag-drop-file-upload.directive';
 import { SearchComponent } from './components/search/search.component';
-import { SearchbarComponent } from './components/searchbar/searchbar.component';
 import { PostComponent } from './components/post/post.component';
 import { AddCommentComponent } from './components/add-comment/add-comment.component';
+import { SearchGetComponent } from './components/search/search-get/search-get.component';
+import { SearchPostComponent } from './components/search/search-post/search-post.component';
 
 @NgModule({
   declarations: [
@@ -30,9 +31,10 @@ import { AddCommentComponent } from './components/add-comment/add-comment.compon
     AddPostComponent,
     DragDropFileUploadDirective,
     SearchComponent,
-    SearchbarComponent,
     PostComponent,
-    AddCommentComponent
+    AddCommentComponent,
+    SearchGetComponent,
+    SearchPostComponent
   ],
   imports: [
     BrowserModule,
