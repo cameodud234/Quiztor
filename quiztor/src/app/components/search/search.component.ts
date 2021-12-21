@@ -22,7 +22,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.searchVal = this.formBuilder.group({
       text: new FormControl(''),
-      // meme : new FormControl(null)
+      meme : new FormControl(null)
     })
   }
 
@@ -38,9 +38,8 @@ export class SearchComponent implements OnInit {
   showPosts() {
     if(this.searchVal.value.text == "") throw new Error("Can not search empty string.");
     this.isSearchPressed = true;
-    // const fd = null;
-    // const fd = new FormData();
-    // fd.append("meme", this.selectedFile);
+    const fd = new FormData();
+    fd.append("meme", this.selectedFile);
     this.service.getPostsSearch(this.searchVal.value, null)
       .subscribe((res) => {
         this.posts = res;
