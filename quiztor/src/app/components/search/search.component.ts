@@ -15,6 +15,7 @@ export class SearchComponent implements OnInit {
   isSearchPressed: boolean = false;
   // isLoaded: boolean = false;
   selectedFile = null;
+  posts;
 
   constructor(private http : HttpClient, private formBuilder: FormBuilder, private service : ServiceService) { }
 
@@ -42,6 +43,7 @@ export class SearchComponent implements OnInit {
     // fd.append("meme", this.selectedFile);
     this.service.getPostsSearch(this.searchVal.value, null)
       .subscribe((res) => {
+        this.posts = res;
         console.log(res)
       }
     )
