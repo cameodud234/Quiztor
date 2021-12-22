@@ -36,16 +36,16 @@ export class SearchComponent implements OnInit {
   }
 
   showPosts() {
-    if(this.searchVal.value.text == "") throw new Error("Can not search empty string.");
+    // if(this.searchVal.value.text == "") throw new Error("Can not search empty string.");
     this.isSearchPressed = true;
     const fd = new FormData();
     fd.append("meme", this.selectedFile);
-    this.service.getPostsSearch(this.searchVal.value, null)
-      .subscribe((res) => {
-        this.posts = res;
-        console.log(res)
-      }
-    )
+    this.service.getPostsSearch(this.searchVal.value, fd)
+      // .subscribe((res) => {
+      //   this.posts = res;
+      //   console.log(res)
+      // }
+    // )
   }
 
 }
