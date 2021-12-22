@@ -116,6 +116,16 @@ module.exports.posts = (req, res, next) => {
             //console.log(options)
             image_label = result[0]
 
+            PostModel.find({label : {$regex: new RegExp(image_label)}},(err, data) => {
+                for(let i in data){
+                    if (data[i].meme_text === image_text){
+                        res.status(400).json({
+                            error:"Meme is already uploaded"
+                        });
+                    }
+                }
+            });
+
             const post = new PostModel({
                 _id: id,
                 label: image_label,

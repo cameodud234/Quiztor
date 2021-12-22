@@ -13,6 +13,10 @@ const postSchema = new Schema({
 });
 
 const PostModel = mongoose.model("post", postSchema, "posts");
+
+// Commented out for testing.
 // PostModel.createIndexes({label:"text", meme_text:"text"});
+
+// let userData = {searchText: "man"}
 
 module.exports = PostModel;
