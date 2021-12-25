@@ -27,7 +27,6 @@ export class SearchComponent implements OnInit {
   }
 
   onFileChange(event) {
-    console.log(event.target.files);
     this.selectedFile = event.target.files[0];
   }
 
@@ -41,11 +40,11 @@ export class SearchComponent implements OnInit {
     const fd = new FormData();
     fd.append("meme", this.selectedFile);
     this.service.getPostsSearch(this.searchVal.value, fd)
-      // .subscribe((res) => {
-      //   this.posts = res;
-      //   console.log(res)
-      // }
-    // )
+      .subscribe((res) => {
+        // this.posts = res;
+        console.log(res)
+      }
+    )
   }
 
 }

@@ -36,17 +36,15 @@ export class ServiceService {
   }
 
   getPostsSearch(value, fd) {
-
-    // this.body = {
-    //   searchText : value.text,
-    //   file : fd
-    // }
-    // console.log(value);
-    // return this.http.get("http://localhost:3000/showQuery", {
-    //   headers : { "authorization" : window.sessionStorage.getItem('token') || ""},
-    //   params: this.body,
-    //   responseType: "json"
-    // })
+    
+    this.body = {
+      searchText : value.text,
+    }
+    return this.http.post("http://localhost:3000/showQuery", fd,{
+      headers : { "authorization" : window.sessionStorage.getItem('token') || ""},
+      params: this.body,
+      responseType: "json"
+    })
   }
 
   addPost(formValues, fd) {
