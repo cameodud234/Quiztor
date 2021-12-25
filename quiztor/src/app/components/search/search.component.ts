@@ -41,8 +41,8 @@ export class SearchComponent implements OnInit {
     fd.append("meme", this.selectedFile);
     this.service.getPostsSearch(this.searchVal.value, fd)
       .subscribe((res) => {
-        // this.posts = res;
-        console.log(res)
+        this.posts = res;
+        console.log(res);
       }
     )
   }

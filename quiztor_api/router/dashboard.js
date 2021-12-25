@@ -1,8 +1,8 @@
 const express = require("express");
 const AuthenticateToken = require("../utils/authentication");
 const router = express.Router();
-const fileMulterPublic = require('./fileMulterPublic');
-const fileMulterTmpDir = require('./fileMulterTmpDir');
+const fileMulterPublic = require('./fileMulter/fileMulterPublic');
+const fileMulterTmpDir = require('./fileMulter/fileMulterTmpDir');
 const controllerGetReq = require('../controller/controlGet');
 const controllerPostReq = require('../controller/controlPost');
 

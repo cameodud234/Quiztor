@@ -199,61 +199,69 @@ module.exports.comment_postid = (req, res) => {
 module.exports.showQuery = async (req, res, next) => {
 
     const userData = req.query;
-    console.log(userData);
-    let l = req.file;
-    console.log(l);
+    let image_label = '';
 
-    res.status(200).json({error: "success"});
-    // let image_text = '';
-    // let image_label = '';
+    const {PythonShell} = require('python-shell');
 
-    // id = new mongoose.Types.ObjectId();
+    let options = {
+        mode: 'text',
+        //   pythonPath: '/opt/anaconda3/bin',
+        pythonOptions: ['-u'], // get print results in real-time
+        scriptPath: './python',
+        args: [userData.searchText]
+    };
 
-    // const pathToFile = 'public/' + req.file.filename;
+    if(userData.searhText !== '' && req.file === undefined){
 
-    // if(userData.searchText !== "" || userData.searchText !== null){
-    //     let image_label = '';
+        let lettersOnly = (str) => {
+            return str.replace(/[^a-zA-Z]/g,"");
+        }
 
-    //     const {PythonShell} = require('python-shell');
+        PythonShell.run('myScript.py', options, function (err, res_inner) {
 
-    //     let options = {
-    //         mode: 'text',
-    //         //   pythonPath: '/opt/anaconda3/bin',
-    //         pythonOptions: ['-u'], // get print results in real-time
-    //         scriptPath: './python',
-    //         args: [userData.searchText]
-    //     };
+            if (err) throw err;
 
-    //     let lettersOnly = (str) => {
-    //         return str.replace(/[^a-zA-Z]/g,"");
-    //     }
+            let syns = res_inner[0];
+            let keywords = syns.substr(1,syns.length - 1);
+            let keywordList = keywords.split(" ");
+            keywordList.push(userData.searchText);
 
-    //     PythonShell.run('myScript.py', options, function (err, res_inner) {
-    //         if (err) throw err;
+            for(let i in keywordList){
+                keywordList[i] = lettersOnly(keywordList[i]);
+            }
 
-    //         let syns = res_inner[0];
-    //         let keywords = syns.substr(1,syns.length - 1);
-    //         let keywordList = keywords.split(" ");
-    //         keywordList.push(userData.searchText);
+            let regex = keywordList.join("|");
+            console.log(regex);
 
-    //         for(let i in keywordList){
-    //             keywordList[i] = lettersOnly(keywordList[i]);
-    //         }
+            PostModel.find({'$or':[
 
-    //         let regex = keywordList.join("|");
-    //         console.log(regex);
+                { label : new RegExp(regex,'i') }, 
 
-    //         PostModel.find({'$or':[
+                { meme_text : new RegExp(regex,'i') 
 
-    //             { label : new RegExp(regex,'i') }, 
+            }]}).exec(function(err, collection) {
+                console.log(collection);
+                res.status(201).json(collection);
+            })
 
-    //             { meme_text : new RegExp(regex,'i') 
+        });
+        
+    }
+    else if (userData.searchText === '' && req.file !== undefined){
+        pathToFile = req.file.destination + "/" + req.file.filename;
 
-    //         }]}).exec(function(err, collection) {
-    //             console.log(collection);
-    //             res.json(collection);
-    //         })
+        PythonShell.run('main.py', options, function (err, result) {
+            if (err) throw err;
+            // result is an array consisting of messages collected
+            //during execution of script.
+            //console.log(options)
+            image_label = result[0];
 
-    //     });
-    // }
+            PostModel.find({label : {$regex: new RegExp(image_label)}},(err, data) => {
+                res.status(200).json(data);
+            });
+        });
+        }
+
+    
 }
