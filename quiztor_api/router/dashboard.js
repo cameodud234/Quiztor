@@ -1,7 +1,8 @@
 const express = require("express");
 const AuthenticateToken = require("../utils/authentication");
 const router = express.Router();
-const fileMulter = require('./fileMulter');
+const fileMulterPublic = require('./fileMulterPublic');
+const fileMulterTmpDir = require('./fileMulterTmpDir');
 const controllerGetReq = require('../controller/controlGet');
 const controllerPostReq = require('../controller/controlPost');
 
@@ -14,9 +15,9 @@ router.get("/post/:postid", controllerGetReq.comment_postid);
 
 
 
-router.post("/posts", fileMulter.single('meme'), controllerPostReq.posts);
+router.post("/posts", fileMulterPublic.single('meme'), controllerPostReq.posts);
 
-router.post("/showQuery" ,AuthenticateToken, controllerPostReq.showQuery);
+router.post("/showQuery" , fileMulterTmpDir.single('meme'),AuthenticateToken, controllerPostReq.showQuery);
 
 router.post("/comment/:postid", controllerPostReq.comment_postid);
 
