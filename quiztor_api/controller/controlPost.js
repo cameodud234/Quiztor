@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const fs = require("fs");
 const { JWT_SECRET_KEY } = require("../config");
 const jwt = require("jsonwebtoken");
+const { resolveSoa } = require('dns');
 // const path = require("path");
 
 
@@ -275,7 +276,17 @@ module.exports.showQuery = async (req, res, next) => {
                 res.status(200).json(data);
             });
         });
-        }
+    }
+
+    else if (userData.searchText !== '' && req.file !== undefined){
+        res.status(500).json({error: "SearchText and image cannot be both nonempty"});
+    }
+
+    else {
+        res.status(500).json({
+            err: "something else other than the form fields of search query went wrong"
+        });
+    }
 
     
 }
