@@ -203,15 +203,16 @@ module.exports.showQuery = async (req, res, next) => {
 
     const {PythonShell} = require('python-shell');
 
-    let options = {
-        mode: 'text',
-        //   pythonPath: '/opt/anaconda3/bin',
-        pythonOptions: ['-u'], // get print results in real-time
-        scriptPath: './python',
-        args: [userData.searchText]
-    };
-
     if(userData.searhText !== '' && req.file === undefined){
+
+        let options = {
+            mode: 'text',
+            //   pythonPath: '/opt/anaconda3/bin',
+            pythonOptions: ['-u'], // get print results in real-time
+            scriptPath: './python',
+            args: [userData.searchText]
+        };
+
 
         let lettersOnly = (str) => {
             return str.replace(/[^a-zA-Z]/g,"");
@@ -237,9 +238,8 @@ module.exports.showQuery = async (req, res, next) => {
 
                 { label : new RegExp(regex,'i') }, 
 
-                { meme_text : new RegExp(regex,'i') 
-
-            }]}).exec(function(err, collection) {
+                { meme_text : new RegExp(regex,'i')}
+            ]}).exec(function(err, collection) {
                 console.log(collection);
                 res.status(201).json(collection);
             })
@@ -248,16 +248,29 @@ module.exports.showQuery = async (req, res, next) => {
         
     }
     else if (userData.searchText === '' && req.file !== undefined){
-        pathToFile = req.file.destination + "/" + req.file.filename;
+        const pathToFile = "./tmpDir" + "/" + req.file.filename;
+
+        let options = {
+            mode: 'text',
+            //   pythonPath: '/opt/anaconda3/bin',
+            pythonOptions: ['-u'], // get print results in real-time
+            scriptPath: './python',
+            args: [pathToFile]
+        };
 
         PythonShell.run('main.py', options, function (err, result) {
             if (err) throw err;
-            // result is an array consisting of messages collected
-            //during execution of script.
-            //console.log(options)
             image_label = result[0];
 
             PostModel.find({label : {$regex: new RegExp(image_label)}},(err, data) => {
+                fs.unlink(pathToFile, (err) => {
+                    if (err) {
+                      console.error(err)
+                      return
+                    }
+                  
+                    //file removed
+                  })
                 res.status(200).json(data);
             });
         });
