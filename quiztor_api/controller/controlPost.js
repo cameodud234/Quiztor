@@ -262,11 +262,12 @@ module.exports.showQuery = async (req, res, next) => {
             if (err) throw err;
             image_label = result[0];
             console.log(`image label: ${image_label}`)
-            PostModel.find({label : {$regex: new RegExp(image_label)}},(err, data) => {
+            PostModel.find({$text: {$search: image_label}},(err, data) => {
+                if(err) res.status(500).json(err);
                 fs.unlink(pathToFile, (err) => {
                     if (err) {
                       console.error(err)
-                      return
+                      res.status(500).json(err);
                     }
                   
                     //file removed

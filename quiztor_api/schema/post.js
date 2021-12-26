@@ -13,6 +13,14 @@ const postSchema = new Schema({
 });
 
 const PostModel = mongoose.model("post", postSchema, "posts");
-// PostModel.createIndexes({label:"text", meme_text:"text"});
+PostModel.createIndexes({label:"text"});
+
+// let searchString = 'car_salesman_meme';
+
+// PostModel.find({$text: {$search: searchString}}, (err, res) => {
+//     if(err) console.err.log(err);
+//     console.log(res);
+// });
+
 
 module.exports = PostModel;
