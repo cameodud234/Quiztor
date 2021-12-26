@@ -85,7 +85,6 @@ module.exports.posts = (req, res, next) => {
     const url = req.protocol + '://' + req.get('host');
 
     id = new mongoose.Types.ObjectId();
-    console.log(`filename ${req.file}`);
     const pathToFile = 'public/' + req.file.filename;
     const newPathToFile = 'public/' + id + '-' + req.file.filename;
 
@@ -117,34 +116,61 @@ module.exports.posts = (req, res, next) => {
             //console.log(options)
             image_label = result[0]
 
-            const post = new PostModel({
-                _id: id,
-                label: image_label,
-                meme_text: image_text,
-                description: body['description'],
-                title: body['title'],
-                meme: url + '/' + id + '-' + req.file.filename
-            });
-    
-            post.save().then(result => {
-                console.log(result);
-                res.status(201).json({
-                    message: "Done upload!",
-                    postCreated: {
-                        _id: result._id,
-                        label: body['label'],
-                        meme_text: body['meme_text'],
+            PostModel.find({$text: {$search: image_label}},(err, result) => {
+                let isMatch = false;
+                for(let i in result){
+                    if (result[i].meme_text === image_text){
+                        console.log("found a match!!");
+                        isMatch = true;
+                        fs.unlink(newPathToFile, (err) => {
+                            if (err) {
+                                res.status(500).json({
+                                    error: "Problem deleting file"
+                                });
+                            }
+                            //file removed
+                        })
+                        break;
+                    }
+                    
+                };
+
+                if(isMatch) {
+                    res.status(500).json({error: "already in database"});
+                }
+                else{
+                    const post = new PostModel({
+                        _id: id,
+                        label: image_label,
+                        meme_text: image_text,
                         description: body['description'],
                         title: body['title'],
-                        meme: result.meme
-                    }
-                })
-            }).catch(err => {
-                console.log(err),
-                    res.status(500).json({
-                        error: err
+                        meme: url + '/' + id + '-' + req.file.filename
                     });
-            })
+            
+                    post.save().then(result => {
+                        console.log(result);
+                        res.status(201).json({
+                            message: "Done upload!",
+                            postCreated: {
+                                _id: result._id,
+                                label: body['label'],
+                                meme_text: body['meme_text'],
+                                description: body['description'],
+                                title: body['title'],
+                                meme: result.meme
+                            }
+                        })
+                    }).catch(err => {
+                        console.log(err),
+                            res.status(500).json({
+                                error: err
+                            });
+                    })
+                }
+
+            });
+
         });
     });
 };
