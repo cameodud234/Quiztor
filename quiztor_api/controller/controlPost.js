@@ -261,7 +261,7 @@ module.exports.showQuery = async (req, res, next) => {
         PythonShell.run('main.py', options, function (err, result) {
             if (err) throw err;
             image_label = result[0];
-
+            console.log(`image label: ${image_label}`)
             PostModel.find({label : {$regex: new RegExp(image_label)}},(err, data) => {
                 fs.unlink(pathToFile, (err) => {
                     if (err) {
