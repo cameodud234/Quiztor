@@ -86,7 +86,7 @@ def write_text(formatted_text):
 
 if __name__ == "__main__":
     
-    # pytesseract.pytesseract.tesseract_cmd=r'Tesseract-OCR/tesseract.exe'
+    pytesseract.pytesseract.tesseract_cmd=r'Tesseract-OCR/tesseract.exe'
 
     image = cv2.imread(sys.argv[1])
     thresholds_image = pre_processing(image)
