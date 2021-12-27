@@ -9,6 +9,12 @@ import numpy
 import cv2
 import pytesseract
 
+from rake_nltk import Rake
+from nltk.tokenize import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+
+
 
 def pre_processing(image):
     """
@@ -95,15 +101,18 @@ if __name__ == "__main__":
 
     arranged_text = format_text(parsed_data)
 
-    #write_text(arranged_text)
-    for i in range(len(arranged_text) - 1):
-        if (i < len(arranged_text)):
-            if (not arranged_text[i]) :
-                arranged_text.pop(i)
+    result = sum(arranged_text, [])
 
-    final_str = ''
-    for i in arranged_text:
-        for j in i:
-            final_str += j + '_'
+    result = " ".join(result)
+
+    r = Rake()
+
+    r.extract_keywords_from_text(result)
+
+    keywords = r.get_ranked_phrases()[:4]
+
+    keywords = "_".join(keywords)
+
+    keywords = keywords.replace(" ", "_")
     
-    print(final_str)
+    print(keywords)
